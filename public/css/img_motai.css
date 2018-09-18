@@ -1,0 +1,70 @@
+/*
+* @Author: Gao Yongjian
+* @Date:   2018-09-05 17:29:10
+* @Last Modified by:   Mo Nanxiao
+* @Last Modified time: 2018-09-05 17:51:57
+*/
+    #real{
+        /*点击弹出模态框的图片*/
+        margin: 30px;
+        width: 250px;
+        border-radius:6px;
+    }
+    #real:hover{
+        opacity: 0.6;
+    }
+    #mo{
+        display: none;/*隐藏*/
+        width: 500px;
+        height: 650px;
+        position: fixed;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.7);
+        /*margin:0px auto;*/
+        margin-left:22%;
+        top: 150px;
+        z-index: 1;
+    }
+    #moimg{
+        height:80%;
+        width: 90%;
+        display: block;
+        margin:25px auto;
+        max-width: 750px;
+    }
+    #caption{
+        text-align: center;
+        margin: 15px auto;
+        width: 60%;
+        max-height: 750px;
+        font-size: 20px;
+        color:#ccc;
+    }
+    #moimg,#caption{
+        -webkit-animation: first 1s;
+        -o-animation: first 1s;
+        animation: first 1s;
+    }
+    @keyframes first{
+        from{transform: scale(0.1);}
+        to{transform: scale(1);}
+    }
+    .close{
+        font-size: 40px;
+        font-weight: bold;
+        position: absolute;
+        top: 0px;
+        right: 14%;
+        margin-right:-55px;
+        color:#f1f1f1;
+    }
+    .close:hover,
+    .close:focus{
+        color:#bbb;
+        cursor:pointer;
+    }
+    @media only screen and(max-width:750px ) {
+        #moimg{
+            width: 100%;
+        }
+    }
