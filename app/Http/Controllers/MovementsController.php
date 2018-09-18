@@ -41,88 +41,97 @@ class MovementsController extends Controller
 
         //公司录入表单信息并返回录入id
         $cid = $company::insertGetId($data);
-        if($cid){
+        if($cid)
+        {
 
-    	//营业执照
-    	$business_license = $request->business_license;
-    	//身份证
-    	$identity_card = $request->identity_card;
-    	//开户许可证
-    	$licence_opening = $request->licence_opening;
-    	//特种经营许可证
-    	$licence = $request->licence;
-        // 用户id
-        $uid = 1;
-        //判断图片是否为空
-        //传入图片，判断图片格式并返回数组集合(储存地址、图片格式、图片类、图片名字)；
-        if(!empty($business_license)){
+        	//营业执照
+        	$business_license = $request->business_license;
+        	//身份证
+        	$identity_card = $request->identity_card;
+        	//开户许可证
+        	$licence_opening = $request->licence_opening;
+        	//特种经营许可证
+        	$licence = $request->licence;
+            // 用户id
+            $uid = 1;
+            //判断图片是否为空
+            //传入图片，判断图片格式并返回数组集合(储存地址、图片格式、图片类、图片名字)；
+            if(!empty($business_license))
+            {
 
-            //调用layout方法
-            $business_license = $this->layout($business_license,$cid); 
-            //附件入库
-           Accessory::insert([
-                                'file_name' => $business_license['name'],
-                                'type' => $business_license['ext'],
-                                'file_belong' => '营业执照',
-                                'order_num'   => 1,
-                                'company_id'  => $cid,
-                                'users_id'    => $uid,
-                                'site_url'    => $business_license['path'],
-                                'created_at'  => date('Y-m-d H:i:s')
-                            ]);
-        }
-        if(!empty($identity_card)){
-            //调用layout方法
-            $identity_card = $this->layout($identity_card,$cid);
-            //附件入库
-            Accessory::insert([
-                                'file_name' => $identity_card['name'],
-                                'type' => $identity_card ['ext'],
-                                'file_belong' => '身份证',
-                                'order_num'   => 1,
-                                'company_id'  => $cid,
-                                'users_id'    => $uid,
-                                'site_url'    => $identity_card ['path'],
-                                'created_at'  => date('Y-m-d H:i:s')
-                            ]);
-        } 
-        if(!empty($licence_opening)){
-             //调用layout方法
-            $licence_opening = $this->layout($licence_opening,$cid);
-             //附件入库
-            Accessory::insert([
-                                'file_name' => $licence_opening['name'],
-                                'type' => $licence_opening['ext'],
-                                'file_belong' => '开户许可证',
-                                'order_num'   => 1,
-                                'company_id'  => $cid,
-                                'users_id'    => $uid,
-                                'site_url'    => $licence_opening['path'],
-                                'created_at'  => date('Y-m-d H:i:s')
-                            ]);
-        }
-        if(!empty($licence)){
-             //调用layout方法
-            $licence = $this->layout($licence,$cid);
-             //附件入库
-            Accessory::insert([
-                                'file_name' => $licence['name'],
-                                'type' => $licence['ext'],
-                                'file_belong' => '特种经营许可证',
-                                'order_num'   => 1,
-                                'company_id'  => $cid,
-                                'users_id'    => $uid,
-                                'site_url'    => $licence['path'],
-                                'created_at'  => date('Y-m-d H:i:s')
-                            ]);     
-        } 
+                //调用layout方法
+                $business_license = $this->layout($business_license,$cid); 
+                //附件入库
+               Accessory::insert([
+                                    'file_name' => $business_license['name'],
+                                    'type' => $business_license['ext'],
+                                    'file_belong' => '营业执照',
+                                    'order_num'   => 1,
+                                    'company_id'  => $cid,
+                                    'users_id'    => $uid,
+                                    'site_url'    => $business_license['path'],
+                                    'created_at'  => date('Y-m-d H:i:s')
+                                ]);
+            }
 
-        return '上传成功';   
+            if(!empty($identity_card))
+            {
+                //调用layout方法
+                $identity_card = $this->layout($identity_card,$cid);
+                //附件入库
+                Accessory::insert([
+                                    'file_name' => $identity_card['name'],
+                                    'type' => $identity_card ['ext'],
+                                    'file_belong' => '身份证',
+                                    'order_num'   => 1,
+                                    'company_id'  => $cid,
+                                    'users_id'    => $uid,
+                                    'site_url'    => $identity_card ['path'],
+                                    'created_at'  => date('Y-m-d H:i:s')
+                                ]);
+            }
+
+            if(!empty($licence_opening))
+            {
+                 //调用layout方法
+                $licence_opening = $this->layout($licence_opening,$cid);
+                 //附件入库
+                Accessory::insert([
+                                    'file_name' => $licence_opening['name'],
+                                    'type' => $licence_opening['ext'],
+                                    'file_belong' => '开户许可证',
+                                    'order_num'   => 1,
+                                    'company_id'  => $cid,
+                                    'users_id'    => $uid,
+                                    'site_url'    => $licence_opening['path'],
+                                    'created_at'  => date('Y-m-d H:i:s')
+                                ]);
+            }
+
+            if(!empty($licence))
+            {
+                 //调用layout方法
+                $licence = $this->layout($licence,$cid);
+                 //附件入库
+                Accessory::insert([
+                                    'file_name' => $licence['name'],
+                                    'type' => $licence['ext'],
+                                    'file_belong' => '特种经营许可证',
+                                    'order_num'   => 1,
+                                    'company_id'  => $cid,
+                                    'users_id'    => $uid,
+                                    'site_url'    => $licence['path'],
+                                    'created_at'  => date('Y-m-d H:i:s')
+                                ]);     
+            }
+ 
+
+            return back();   
+
         }else{
-            return '录入失败';
-        }
-           
-        
+                return '录入失败';
+            }
+         
     }
 
     //创建自然人信息
@@ -217,7 +226,7 @@ class MovementsController extends Controller
                                 ]);
             }
 
-            return '上传成功';   
+            return back();   
 
         }else{
                 return '录入失败';

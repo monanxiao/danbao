@@ -1,5 +1,5 @@
  <!-- 增加阶段初审材料模态框 -->
-<div class="modal fade" id="phaseAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="csclAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style='width:1280px;'>
     <div class="modal-content">
       <div class="modal-header">

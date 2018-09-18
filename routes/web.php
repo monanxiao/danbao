@@ -44,3 +44,5 @@ Route::get('items/phase/show/{iid}','ItemsController@ItemsShow');
 Route::post('items/phase/show/{iid}','ItemsPhasesController@create_tables');
 //项目表单更改更新完成
 Route::post('items/phase/edit/{pid}','ItemsPhasesController@update_tables');
+//阶段创建生成
+Route::get('items/phase/create','ItemsPhasesController@create_phase');

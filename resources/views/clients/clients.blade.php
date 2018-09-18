@@ -8,7 +8,8 @@
         <button class="btn btn-primary btn-sm" >搜索</button>
         <button type='button' class="btn btn-info btn-sm" data-toggle="modal" data-target="#companyAdd" >
         <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;公司
-    </button> 
+        </button> 
+        <a href="{{ URL('items/phase/create') }}" >生成阶段</a>
     </form>
 </div>
     {{-- 导航区 --}}

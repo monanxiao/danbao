@@ -29,8 +29,9 @@
                         </tr>
                     </thead>
                 <tbody>
+                    @foreach($company as $cv)
                     <tr class="active"  style="white-space: nowrap;">
-                        @foreach($company as $cv)
+                        
                         <td style='text-align:center;'>#{{ $cv->id }}</td> 
                         <td>{{ $cv->company_name }}</td>
                         <td style='text-align:center;'>{{ $cv->company_type }}</td>
@@ -63,8 +64,9 @@
                                     <input type="hidden" id='u_garden' value='{{ $cv->garden  }}' name="commit" />
                                     <input type="hidden" id='u_guild' value='{{ $cv->guild  }}' name="commit" /> --}}
                         </td>
-                        @endforeach                       
-                    </tr>
+                                             
+                    </tr> 
+                    @endforeach 
                 </tbody>
             </table>
     </div>

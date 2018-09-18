@@ -9,9 +9,24 @@ use App\Models\ItemsPhaseCreate;
 use App\Models\investigating;
 use App\Models\Fxscsp;
 use App\Models\Xmbgjsp;
+use App\Models\ItemsPhase;
 
 class ItemsPhasesController extends Controller
 {
+    //生成阶段
+    public function create_phase(Request $request){
+
+        //生成阶段数据
+        $phase = ItemsPhase::insert([
+                                    ['phase_name'=>'初审材料','phase_type'=>'csclAdd','created_at'=>date('Y-m-d H:i:s')],
+                                    ['phase_name'=>'保前尽职调查','phase_type'=>'bqjzdcAdd','created_at'=>date('Y-m-d H:i:s')],
+                                    ['phase_name'=>'风险审查审批','phase_type'=>'fxscspAdd','created_at'=>date('Y-m-d H:i:s')]
+                                    ]);
+        //生成成功返回上一步操作
+        if($phase){
+            return back();
+        }
+    }
 
     //录入项目阶段表单
     public function create_tables($iid,Request $request,CreateItemsTable $phasecreate){
