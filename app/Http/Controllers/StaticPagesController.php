@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\Natural;
 use App\Models\Item;
+//引入word类
+use App\Handlers\CreateWord;
 
 class StaticPagesController extends Controller
 {
@@ -39,5 +41,11 @@ class StaticPagesController extends Controller
               $natural = Natural::find($cid);
               
             return view('clients.clientsnAturalitems',compact('cid','item','natural'));
+    }
+    //模板录入测试
+    public function word(CreateWord $created){
+        $data =1;
+        $array = $created->create($data);
+        dd($array);
     }
 }

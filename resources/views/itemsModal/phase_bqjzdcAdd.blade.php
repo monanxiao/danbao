@@ -57,6 +57,8 @@
 @if($bqjzdc_status == 0)
 <form action="" method='POST' enctype="multipart/form-data">
       {{ csrf_field() }}        
+      <input type="hidden" id='table_status' name='table_status' value=''/>
+      <input type="hidden" name='btn_type' value='bqjzdc'/>
 {{-- 面板区 --}}
 <div class="tab-content">
 
@@ -229,8 +231,7 @@
                         <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-bars" aria-hidden="true">&nbsp;&nbsp;金融机构</i></div>
                             <input type="text" name='jrjg_name' class="form-control" id="exampleInputAmount" placeholder="金融机构名称" maxlength='50'>
-                            <input type="hidden" id='table_status2' name='table_status' value=''/>
-                            <input type="hidden" name='btn_type' value='bqjzdc'/>
+                            
                         </div>
                     </div>
               </td>

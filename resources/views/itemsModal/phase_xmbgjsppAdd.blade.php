@@ -1,5 +1,5 @@
  <!-- 增加阶段项目变更及审批模态框 -->
-<div class="modal fade" id="xmbgjsp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="xmbgjspAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style='width:1280px;'>
     <div class="modal-content">
       <div class="modal-header">

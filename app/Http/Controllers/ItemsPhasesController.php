@@ -20,7 +20,12 @@ class ItemsPhasesController extends Controller
         $phase = ItemsPhase::insert([
                                     ['phase_name'=>'初审材料','phase_type'=>'csclAdd','created_at'=>date('Y-m-d H:i:s')],
                                     ['phase_name'=>'保前尽职调查','phase_type'=>'bqjzdcAdd','created_at'=>date('Y-m-d H:i:s')],
-                                    ['phase_name'=>'风险审查审批','phase_type'=>'fxscspAdd','created_at'=>date('Y-m-d H:i:s')]
+                                    ['phase_name'=>'反担保落实','phase_type'=>'fdblsAdd','created_at'=>date('Y-m-d H:i:s')],
+                                    ['phase_name'=>'风险审查审批','phase_type'=>'fxscspAdd','created_at'=>date('Y-m-d H:i:s')],
+                                    ['phase_name'=>'担保函','phase_type'=>'dbhAdd','created_at'=>date('Y-m-d H:i:s')],
+                                    ['phase_name'=>'项目变更及审批','phase_type'=>'xmbgjspAdd','created_at'=>date('Y-m-d H:i:s')],
+                                    ['phase_name'=>'合同起草、审批及签订、公证','phase_type'=>'htqcspqdgzAdd','created_at'=>date('Y-m-d H:i:s')],
+                                    ['phase_name'=>'放款程序','phase_type'=>'fkcxAdd','created_at'=>date('Y-m-d H:i:s')],
                                     ]);
         //生成成功返回上一步操作
         if($phase){
@@ -29,119 +34,45 @@ class ItemsPhasesController extends Controller
     }
 
     //录入项目阶段表单
-    public function create_tables($iid,Request $request,CreateItemsTable $phasecreate){
+    public function create_tables($iid,Request $request,CreateItemsTable $phasecreate)
+    {
+        //初始资料阶段
+        if($request->btn_type == 'cscl')
+        {   
+            //初审材料
+        	//录入的字段白名单
+        	$data = $request->only([
+        							'loans_use',
+        							'borrower',
+        							'deadline',
+        							'rate',
+        							'measure',
+        							'loans_money',
+        							'table_status',
+        							'items_id',
+        							'created_at'
+        							]);
 
-        //反担保落实
-        // dd($request);exit;
-        //项目变更及审批
-        if($request->btn_type == 'xmbgjsp')
-        {
-            // dd($request);exit;
-            //白名单字段
-            $data = $request->only([
-                                    'loan_bank',
-                                    'items_id',
-                                    'alteration',
-                                    'table_status',
-                                    'created_at'
-                                   ]);
-            //项目id
-            $data['items_id'] = $iid;
-            //数据创建时间
-            $data['created_at'] = date('Y-m-d H:i:s');
-            //获取提交状态
+            //获取提交的状态
             $status = $request->table_status;
-            //判断状态
-            if($status == 2)
-            {
-                //获取当前状态
-                $data['table_status'] = 2;
-                //数据入库
-                $id = Xmbgjsp::insertGetId($data);
-                 //执行成功，修改阶段状态
-                if($id)
-                {
+            //要录入的数据库
+            $table = new CreateItemsTable();
+            //提交的阶段
+            $num = 1;
+            //调用入库方法
+            $status = $this->phase_create($data,$iid,$status,$table,$num);
+            //是否调用成功
+            if($status){
 
-                    //修改阶段状态
-                    ItemsPhaseCreate::where('items_id', '=', $iid)
-                                            ->where('phases_id','=',4)
-                                            ->update(['phases_status'=>'进行中']);
-                    return back();
-                }
-                
-            }elseif($status == 1)
-            {
-                //修改数据表状态
-                 $data['table_status'] = 1;
-                //数据入库
-                 $id = Xmbgjsp::insertGetId($data);
-                //执行成功，修改阶段状态
-                if($id)
-                {
+                return back();
+            }else{
 
-                    //修改阶段状态
-                    ItemsPhaseCreate::where('items_id', '=', $iid)
-                                            ->where('phases_id','=',4)
-                                            ->update(['phases_status'=>'完成']);
-                    return back();
-                }
+                return '数据录入有误';
             }
-        }
-        //风险审查审批阶段
-        if($request->btn_type == 'fxhbjb'){
-            //白名单字段
-            $data = $request->only([
-                                    'risk_name',
-                                    'item_name',
-                                    'assure',
-                                    'commit',
-                                    'content',
-                                    'items_id',
-                                    'table_status',
-                                    'created_at'
-                                ]);
-            //项目id
-            $data['items_id'] = $iid;
-            //数据创建时间
-            $data['created_at'] = date('Y-m-d H:i:s');
-            //获取提交状态
-            $status = $request->table_status;
-            //判断提交状态
-            if($status == 2){
-                //修改数据表状态
-                $data['table_status'] = 2;
-                //数据入库
-                $id = Fxscsp::insertGetId($data);
-                //执行成功，修改阶段状态
-                if($id){
 
-                    //修改阶段状态
-                    ItemsPhaseCreate::where('items_id', '=', $iid)
-                                            ->where('phases_id','=',3)
-                                            ->update(['phases_status'=>'进行中']);
-                    return back();
-                }
-
-            }elseif($status == 1){
-                 //修改数据表状态
-                $data['table_status'] = 1;
-                //数据入库
-                $id = Fxscsp::insertGetId($data);
-                //执行成功，修改阶段状态
-                if($id){
-
-                    //修改阶段状态
-                    ItemsPhaseCreate::where('items_id', '=', $iid)
-                                            ->where('phases_id','=',3)
-                                            ->update(['phases_status'=>'完成']);
-                    return back();
-                }
-            }
-            
-        }
-        //保前尽职调查入库
-        if($request->btn_type == 'bqjzdc')
+        }elseif ($request->btn_type == 'bqjzdc')
         {
+            //保前尽职调查
             //录入的字段白名单
             $data = $request->only([
                                     'items_id',
@@ -160,107 +91,156 @@ class ItemsPhasesController extends Controller
                                     'table_status',
                                     'created_at'
                                     ]);
-            //项目id
-            $data['items_id'] = $iid;
-            //阶段数据创建时间
-            $data['created_at'] = date('Y-m-d H:i:s');
-            //提交数据 修改、保存、完成
+            //获取提交的状态
             $status = $request->table_status;
-            //判断提交类型
-            if($status == 2)
-            {
-                //修改数据状态
-                $data['table_status'] = 2;
-                //数据入库
-                $id = investigating::insertGetId($data);
+            //要录入的数据库
+            $table = new investigating();
+            //提交的阶段
+            $num = 2;
+            //调用入库方法
+            $status = $this->phase_create($data,$iid,$status,$table,$num);
+                //是否调用成功
+                if($status)
+                {
 
-                //执行成功，修改阶段状态
-                if($id){
-
-                    //修改阶段状态
-                    ItemsPhaseCreate::where('items_id', '=', $iid)
-                                            ->where('phases_id','=',2)
-                                            ->update(['phases_status'=>'进行中']);
                     return back();
+                }else
+                {
+
+                    return '数据录入有误';
                 }
+
+        }elseif ($request->btn_type == 'fdbls')
+        {   //暂无 反担保落实
+
+        }elseif ($request->btn_type == 'fxhbjb')
+        {   //风险审查审批
+             //白名单字段
+            $data = $request->only([
+                                    'risk_name',
+                                    'item_name',
+                                    'assure',
+                                    'commit',
+                                    'content',
+                                    'items_id',
+                                    'table_status',
+                                    'created_at'
+                                ]);
+
+            //获取提交的状态
+            $status = $request->table_status;
+            //要录入的数据库
+            $table = new Fxscsp();
+            //提交的阶段
+            $num = 4;
+            //调用入库方法
+            $status = $this->phase_create($data,$iid,$status,$table,$num);
+                //是否调用成功
+                if($status)
+                {
+
+                    return back();
+                }else
+                {
+
+                    return '数据录入有误';
+                }
+
+        }elseif ($request->btn_type == 'dbh')
+        {   //暂无 担保函
+
+        }elseif ($request->btn_type == 'xmbgjsp') 
+        {   
+            //项目变更及审批
+            //白名单字段
+            $data = $request->only([
+                                    'loan_bank',
+                                    'items_id',
+                                    'alteration',
+                                    'table_status',
+                                    'created_at'
+                                   ]);
+            // dd($data);exit;
+            //获取提交的状态
+            $status = $request->table_status;
+            //要录入的数据库
+            $table = new Xmbgjsp();
+            //提交的阶段
+            $num = 6;
+            //调用入库方法
+            $status = $this->phase_create($data,$iid,$status,$table,$num);
+                //是否调用成功
+                if($status)
+                {
+                    return back();
+                }else
+                {
+                    return '数据录入有误';
+                }
+        }elseif ($request->btn_type == 'htqcspjqd')
+        {   //暂无 合同起草审批及签订
+
+        }elseif ($request->btn_type == 'fkcx')
+        {   //暂无放款程序
+
+        }
+    }
+
+    //处理录入阶段表单数据方法
+    public function phase_create($data,$iid,$status,$table,$num)
+    {
+
+        //data 录入的字段白名单 iid项目id status 提交的状态 table数据表 num 第几阶段
+
+        //项目id
+        $data['items_id'] = $iid;
+        //入库时间
+        $data['created_at'] = date('Y-m-d H:i:s');
+
+        //判断提交的状态
+        //状态等于2的时候
+        if($status == 2)
+        {
+
+            //状态值赋值为2
+            $data['table_status'] = 2;
+
+            //获取到的数据入库
+            $table = $table::insertGetId($data);
+
+            //假如录入成功，则修改阶段的状态
+            if($table)
+            {
+                //录入阶段状态
+                ItemsPhaseCreate::where('items_id', '=', $iid)
+                                    ->where('phases_id','=',$num)
+                                    ->update(['phases_status'=>'进行中']);
+                return 'true';
             }
 
-            if($status == 1){
-                //修改数据状态
+            //或者等于1的时候 完成阶段录入
+        }   elseif($status == 1)
+            {
+
+                //状态值赋值为1
                 $data['table_status'] = 1;
                 //数据入库
-                $id = investigating::insertGetId($data);
-
-                //执行成功，修改阶段状态
-                if($id){
-
-                    //修改阶段状态
-                    ItemsPhaseCreate::where('items_id', '=', $iid)
-                                            ->where('phases_id','=',1)
+                $table = $table::insertGetId($data);
+                //修改阶段状态
+                if($table)
+                {
+                        ItemsPhaseCreate::where('items_id', '=', $iid)
+                                            ->where('phases_id','=',$num)
                                             ->update(['phases_status'=>'完成']);
-                    return back();
+                    return 'true';                          
                 }
+            }else{
+
+                return 'false';
             }
-        }
-        //初始资料阶段
-        if($request->btn_type == 'cscl')
-        {
-        	//录入的字段白名单
-        	$data = $request->only([
-        							'loans_use',
-        							'borrower',
-        							'deadline',
-        							'rate',
-        							'measure',
-        							'loans_money',
-        							'table_status',
-        							'items_id',
-        							'created_at'
-        							]);
-        	//项目id
-        	$data['items_id'] = $iid;
-        	//入库时间
-        	$data['created_at'] = date('Y-m-d H:i:s');
-      	
-        	//获取操作状态
-        	$status = $request->table_status;
-        	//保存为可修改状态
-        	if($status == 2)
-            {
-        		$data['table_status'] = 2;
 
-    	    	//数据入库
-    	    	$phasecreate = $phasecreate::insertGetId($data);
+    } 
 
-    			//修改阶段状态
-    			    if($phasecreate)
-    			    {
-    			    		ItemsPhaseCreate::where('items_id', '=', $iid)
-    			    							->where('phases_id','=',1)
-    											->update(['phases_status'=>'进行中']);
-    					return back();
-    			    }
-
-    	   }
-
-    	    //保存成功进入下一阶段
-        	if($status == 1)
-            {
-        		$data['table_status'] = 1;
-    	    	//数据入库
-    	    	$phasecreate::insertGetId($data);
-    			//修改阶段状态
-    			    if($phasecreate)
-    			    {
-    			    		ItemsPhaseCreate::where('items_id', '=', $iid)
-    			    							->where('phases_id','=',1)
-    											->update(['phases_status'=>'完成']);
-    					return back();							
-    			    }
-    				
-        	}
-        }	
-    }
     //更新表单数据
     public function update_tables($pid,Request $request)
     {   

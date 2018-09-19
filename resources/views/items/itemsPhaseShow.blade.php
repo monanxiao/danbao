@@ -122,14 +122,17 @@
 @include('itemsModal.phase_bqjzdcAdd') 
 {{--  风险审批审查 --}} 
 @include('itemsModal.phase_fxscspAdd')
+{{-- 担保函 --}}
+@include('itemsModal.phase_dbhAdd')
 {{-- 项目变更及审批 --}}
-@include('itemsModal.phase_fdblsdAdd')
-{{-- 合同起草审查及签订公证 --}}
-@include('itemsModal.phase_fkcxAdd')
-{{-- 反担保落实 --}}
-@include('itemsModal.phase_htqcscqdgzAdd')
-{{-- 放款程序 --}}
 @include('itemsModal.phase_xmbgjsppAdd')
+{{-- 合同起草审查及签订公证 --}}
+@include('itemsModal.phase_htqcscqdgzAdd')
+{{-- 反担保落实 --}}
+@include('itemsModal.phase_fdblsdAdd')
+{{-- 放款程序 --}}
+@include('itemsModal.phase_fkcxAdd')
+
 @endif
  
   

@@ -23,10 +23,137 @@
              <div class="modal-body">           
           <table class="table table-striped table-bordered table-hover">
             <tr>
-                <th colspan="5" style='text-align: center'><h3>附件上传</h3></th>
-              </tr>
+              <td colspan="2" style='width:500px;'>
+                  <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">客户名称</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">公司</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" value='{{ $company->company_name }}'maxlength="20">
+                      </div>
+                  </div>
+              </td>
+              <td>
+                <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">风险控制委员会决议编号</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">决议编号</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="决议编号" maxlength="20">
+                      </div>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style='width:500px;text-align: center;'>合同(1)</td>
+            </tr>
+            <tr>
+              <td>
+                  <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">合同名称</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">合同名称</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="合同名称" maxlength="20">
+                      </div>
+                  </div>
+              </td>
+              <td>
+                <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">合同编号</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">合同编号</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="合同编号" maxlength="20">
+                      </div>
+                  </div>
+              </td>
+              <td>
+                <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">份数</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">份数</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="份数" maxlength="20">
+                      </div>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style='width:500px;text-align: center;'>合同(2)</td>
+            </tr>
+            <tr>
+              <td>
+                  <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">合同名称</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">合同名称</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="合同名称" maxlength="20">
+                      </div>
+                  </div>
+              </td>
+              <td>
+                <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">合同编号</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">合同编号</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="合同编号" maxlength="20">
+                      </div>
+                  </div>
+              </td>
+              <td>
+                <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">份数</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">份数</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="份数" maxlength="20">
+                      </div>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" style='width:500px;text-align: center;'>合同(3)</td>
+            </tr>
+            <tr>
+              <td>
+                  <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">合同名称</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">合同名称</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="合同名称" maxlength="20">
+                      </div>
+                  </div>
+              </td>
+              <td>
+                <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">合同编号</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">合同编号</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="合同编号" maxlength="20">
+                      </div>
+                  </div>
+              </td>
+              <td>
+                <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">份数</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">份数</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="份数" maxlength="20">
+                      </div>
+                  </div>
+              </td>
+            </tr>
+            <tr>
+                <td colspan="3" style='width:500px;'>
+                  <div class="form-group">
+                      <label class="sr-only" for="exampleInputAmount">备注</label>
+                      <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">备注</i></div>
+                          <input type="text" name='company_name' class="form-control" id="exampleInputAmount" placeholder="输入备注" maxlength="20">
+                      </div>
+                  </div>
+                </td>
+            </tr>
+            <tr>
+                <th colspan="3" style='text-align: center'><h3>附件上传</h3></th>
+            </tr>
               <tr>
-                <td colspan="5">
+                <td colspan="3">
                     <!-- 导航区 -->
                     <ul class="nav nav-tabs" role="tablist">
                       <li role="presentation" class="active"><a href="#yezz" role="tab" data-toggle="tab">附件</a></li>
