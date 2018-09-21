@@ -460,6 +460,7 @@
     {{-- 面板区域 --}} 
 <form action="{{ URL('items/phase/edit',$phasetable['id']) }}" method='POST' enctype="multipart/form-data">
    {{ csrf_field() }}
+   <input type="hidden" name='btn_type' value='cscl'>
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="lxspb">
         <div class="form-group">

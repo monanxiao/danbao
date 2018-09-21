@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\Natural;
 use App\Models\Item;
-//引入word类
-use App\Handlers\CreateWord;
 
 class StaticPagesController extends Controller
 {
@@ -42,10 +40,10 @@ class StaticPagesController extends Controller
               
             return view('clients.clientsnAturalitems',compact('cid','item','natural'));
     }
-    //模板录入测试
-    public function word(CreateWord $created){
-        $data =1;
-        $array = $created->create($data);
-        dd($array);
+    //预览word
+    public function word(){
+        
+        return view('staticpages.word');
     }
+
 }

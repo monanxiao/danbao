@@ -11,6 +11,8 @@ use App\Models\Fxscsp;
 use App\Models\Xmbgjsp;
 use App\Models\ItemsPhase;
 
+use App\Handlers\CreateWord;
+
 class ItemsPhasesController extends Controller
 {
     //生成阶段
@@ -35,7 +37,8 @@ class ItemsPhasesController extends Controller
 
     //录入项目阶段表单
     public function create_tables($iid,Request $request,CreateItemsTable $phasecreate)
-    {
+    {   
+        
         //初始资料阶段
         if($request->btn_type == 'cscl')
         {   
@@ -52,19 +55,20 @@ class ItemsPhasesController extends Controller
         							'items_id',
         							'created_at'
         							]);
-
             //获取提交的状态
             $status = $request->table_status;
             //要录入的数据库
             $table = new CreateItemsTable();
             //提交的阶段
             $num = 1;
+           
             //调用入库方法
             $status = $this->phase_create($data,$iid,$status,$table,$num);
             //是否调用成功
             if($status){
 
                 return back();
+
             }else{
 
                 return '数据录入有误';
@@ -191,7 +195,6 @@ class ItemsPhasesController extends Controller
     {
 
         //data 录入的字段白名单 iid项目id status 提交的状态 table数据表 num 第几阶段
-
         //项目id
         $data['items_id'] = $iid;
         //入库时间
@@ -308,7 +311,15 @@ class ItemsPhasesController extends Controller
     							'items_id',
     							'created_at'
     							]);
-  	         
+  	         //文档阶段
+            $type = $request->btn_type;
+
+            $createdword = new CreateWord();
+
+            $iid = 1;
+            //调用word模板方法
+            $url = $createdword->create($data,$type,$iid);
+            dd($url);exit;
         	//获取操作状态
         	$status = $request->table_status;
         	//判断修改状态
