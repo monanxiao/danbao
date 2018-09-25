@@ -6,54 +6,16 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><span name='phase_title'></span></h4>
         </div>
-    <script>
-     // 默认下拉框
-      window.onload=function(){
-                              //所属园区
-                              var optElements = document.getElementById("selId").children;
+<!-- 导航区 -->
+<ul class="nav nav-tabs"  role="tablist">
+  <li role="presentation" id='lxcss' class="active">
+    <a href="#rzdbyewspb"  role="tab" data-toggle="tab">融资担保业务审批表</a>
+  </li>
+  <li role="presentation" id='dbcss' class=''>
+    <a href="#fdbwr"  role="tab" data-toggle="tab">反担保物、反担保人</a>
+  </li>
+</ul>
 
-                              var optValue = document.getElementById("vaId").value;
-
-                              for(var opt in optElements){
-                                  if(optElements[opt].value == optValue){
-                                      optElements[opt].selected="selected";
-                                  }
-                              }
-
-                              //货币分类
-                              var optElements = document.getElementById("selhbId").children;
-                              
-                              var optValue = $("#hbIdval").val();
-                              
-
-                              for(var opt in optElements){
-                                  if(optElements[opt].value == optValue){
-                                      optElements[opt].selected="selected";
-                                  }
-                              }
-
-                              //行业
-                              var optElements = document.getElementById("selhyId").children;
-                              
-                              var optValue = $("#hyIdval").val();
-                              
-
-                              for(var opt in optElements){
-                                  if(optElements[opt].value == optValue){
-                                      optElements[opt].selected="selected";
-                                  }
-                              }
-                          }
-    </script>
-          <!-- 导航区 -->
-        <ul class="nav nav-tabs"  role="tablist">
-          <li role="presentation" id='lxcss' class="active">
-            <a href="#rzdbyewspb"  role="tab" data-toggle="tab">融资担保业务审批表</a>
-          </li>
-          <li role="presentation" id='dbcss' class=''>
-            <a href="#fdbwr"  role="tab" data-toggle="tab">反担保物、反担保人</a>
-          </li>
-        </ul>
 @if($bqjzdc_status == 0)
 <form action="" method='POST' enctype="multipart/form-data">
       {{ csrf_field() }}        
@@ -69,12 +31,12 @@
            <div class="modal-body">           
           <table class="table table-striped table-bordered table-hover">
             <tr>
-              <td>
+              <td style='width:300px;'>
                 <fieldset disabled>
                   <div class="form-group">
-                      <label class="sr-only" for="exampleInputAmount">客户名称</label>
+                      <label class="sr-only" for="exampleInputAmount">客户</label>
                       <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">&nbsp;&nbsp;客户名称</i></div>
+                          <div class="input-group-addon"><i class="fa fa-building" aria-hidden="true">&nbsp;&nbsp;客户</i></div>
                           <input type="text" name='company_name' class="form-control" id="exampleInputAmount" value='{{ $company->company_name }}'maxlength="20">
                       </div>
                   </div>
@@ -121,7 +83,7 @@
                     <div class="form-group">
                         <label class="sr-only" for="exampleInputAmount">经营范围</label>
                         <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;经营范围</i></div>
+                            <div class="input-group-addon"><i class="fa fa-star-o" aria-hidden="true">&nbsp;&nbsp;经营范围</i></div>
                             <input type="text" name='registered_address' class="form-control" id="exampleInputAmount" value='{{ $company->frame }}' maxlength='50'>
                         </div>
                     </div>
@@ -134,7 +96,7 @@
                   <div class="form-group">
                       <label class="sr-only" for="exampleInputAmount">用途</label>
                       <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;用途</i></div>
+                          <div class="input-group-addon"><i class="fa fa-location-arrow" aria-hidden="true">&nbsp;&nbsp;用途</i></div>
                           <input type="text" name='business_address' class="form-control" id="exampleInputAmount"  value='{{ $phasetable['loans_use'] }}' maxlength='50'>
                       </div>
                   </div>
@@ -145,7 +107,7 @@
                   <div class="form-group">
                       <label class="sr-only" for="exampleInputAmount">贷款人</label>
                       <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;贷款人</i></div>
+                          <div class="input-group-addon"><i class="fa fa-user-circle-o" aria-hidden="true">&nbsp;&nbsp;贷款人</i></div>
                           <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
                       </div>
                   </div>
@@ -156,7 +118,7 @@
                   <div class="form-group">
                       <label class="sr-only" for="exampleInputAmount">担保期限</label>
                       <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保期限</i></div>
+                          <div class="input-group-addon"><i class="fa fa-clock-o" aria-hidden="true">&nbsp;&nbsp;担保期限</i></div>
                           <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['deadline'] }}' maxlength='2'>
                       </div>
                   </div>
@@ -167,7 +129,7 @@
                   <div class="form-group">
                       <label class="sr-only" for="exampleInputAmount">担保费率</label>
                       <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保费率</i></div>
+                          <div class="input-group-addon"><i class="fa fa-percent" aria-hidden="true">&nbsp;&nbsp;担保费率</i></div>
                           <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['rate'] }}' maxlength='3'>
                       </div>
                   </div>
@@ -180,7 +142,7 @@
                   <div class="form-group">
                         <label class="sr-only" for="exampleInputAmount">成立时间</label>
                         <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-bars" aria-hidden="true">&nbsp;&nbsp;成立时间</i></div>
+                            <div class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true">&nbsp;&nbsp;成立时间</i></div>
                             <input type="text" name='company_machin' class="form-control" id="exampleInputAmount" value='{{ $company->establish_time }}' maxlength='13'>
                         </div>
                     </div>
@@ -191,7 +153,7 @@
                   <div class="form-group">
                       <label class="sr-only" for="exampleInputAmount">企业划型</label>
                       <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-bars" aria-hidden="true">&nbsp;&nbsp;企业划型</i></div>
+                          <div class="input-group-addon"><i class="fa fa-map" aria-hidden="true">&nbsp;&nbsp;企业划型</i></div>
                           <input type="text" name='company_machin' class="form-control" id="exampleInputAmount" value='{{ $company->company_type }}' maxlength='13'>
                       </div>
                   </div>
@@ -201,7 +163,7 @@
                 <div class="form-group">
                   <label class="sr-only" for="exampleInputAmount">所属行业</label>
                   <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-bars" aria-hidden="true">&nbsp;&nbsp;所属行业</i></div>
+                      <div class="input-group-addon"><i class="fa fa-share" aria-hidden="true">&nbsp;&nbsp;所属行业</i></div>
                       <select name='sshy' class="form-control">
                         <option value='机构组织'>机构组织</option>
                         <option value='农林牧渔'>农林牧渔</option>
@@ -217,7 +179,7 @@
                   <div class="form-group">
                       <label class="sr-only" for="exampleInputAmount">担保金额</label>
                       <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-bars" aria-hidden="true">&nbsp;&nbsp;担保金额</i></div>
+                          <div class="input-group-addon"><i class="fa fa-jpy" aria-hidden="true">&nbsp;&nbsp;担保金额</i></div>
                           <input type="text" name='company_machin' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money'] }}' maxlength='13'>
                       </div>
                   </div>
@@ -252,7 +214,7 @@
                 <div class="form-group">
                         <label class="sr-only" for="exampleInputAmount">负债总额</label>
                         <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-bars" aria-hidden="true">&nbsp;&nbsp;负债总额</i></div>
+                            <div class="input-group-addon"><i class="fa fa-jpy" aria-hidden="true">&nbsp;&nbsp;负债总额</i></div>
                             <input type="text" name='fzze' class="form-control" id="exampleInputAmount" placeholder="负债总额(元)" maxlength='50'>
                         </div>
                     </div>
@@ -261,7 +223,7 @@
                 <div class="form-group">
                         <label class="sr-only" for="exampleInputAmount">本公司在保余额</label>
                         <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-bars" aria-hidden="true">&nbsp;&nbsp;在保余额</i></div>
+                            <div class="input-group-addon"><i class="fa fa-jpy" aria-hidden="true">&nbsp;&nbsp;在保余额</i></div>
                             <input type="text" name='dbye' class="form-control" id="exampleInputAmount" placeholder="在保余额(元)" maxlength='50'>
                         </div>
                     </div>
@@ -281,7 +243,7 @@
                 <div class="form-group">
                         <label class="sr-only" for="exampleInputAmount">贷款期限</label>
                         <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-bars" aria-hidden="true">&nbsp;&nbsp;贷款期限</i></div>
+                            <div class="input-group-addon"><i class="fa fa-clock-o" aria-hidden="true">&nbsp;&nbsp;贷款期限</i></div>
                             <input type="text" name='dkqx' class="form-control" id="exampleInputAmount" placeholder="0月" maxlength='50'>
                         </div>
                     </div>

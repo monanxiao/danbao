@@ -43,7 +43,7 @@
                         <td style='text-align:center;'>{{ $cv->scale }}</td>
                         <td style='text-align:center;'>{{ $cv->company_machin }}</td>
                         <td style='text-align:center;'>
-                            <a href="#"  class="btn btn-success btn-sm">
+                            <a href="{{ URL('clients/items',$cv->id) }}"  class="btn btn-success btn-sm">
                             项目
                             </a>&nbsp;
                             <a href="{{ URL('company',$cv->id) }}" class="btn btn-success btn-sm">

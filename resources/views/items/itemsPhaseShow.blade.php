@@ -56,10 +56,24 @@
     </table>
 <ul class="list-inline">
     @foreach($phase as $pv)
-    <li style='float:left;margin-left:10px;'> 
-        <button type="button" id='title_1' class="btn btn-success btn-sm" data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
-            {{ $pv->phase_name }}
+    <li style=' float:left; margin-left:10px; '> 
+
+      @if( $pv->phases_status == '进行中' )
+
+        <button type="button" id='title_1' class="btn  btn-sm" style='color:#fff;font-size:16px;background:#00FF00;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
+          {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>进行中</b></span>
+      @elseif( $pv->phases_status == '完成' )
+
+      <button type="button" id='title_1' class="btn btn-info btn-sm" style='font-size:16px;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
+       {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>完成</b></span>
+      @else
+        <button type="button" id='title_1' class="btn btn-sm" style='color:#fff;background: #F5DEB3;font-size:16px;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
+           {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>未开始</b></span>
+      @endif    
+           
         </button>
+      
+           
         <i class="fa fa-arrow-circle-right" aria-hidden="true" style='margin-left:15px;'></i>
         <input type="hidden" id='pname' value='{{ $pv->phase_name }}' />
     </li>
@@ -77,6 +91,11 @@
         <li role="presentation" >
             <a href="#tab-bottom-left2" role="tab" data-toggle="tab">
             意见<span class="badge">0</span>
+            </a>
+        </li>
+        <li role="presentation" >
+            <a href="#tab-bottom-left3" role="tab" data-toggle="tab">
+            word文档<span class="badge">0</span>
             </a>
         </li>
         <li role="presentation" >
@@ -140,7 +159,7 @@
     // 日期选择器设置
     $('#sandbox-container').datepicker({ 
                                           language: "zh-CN",
-                                          orientation: "top auto",
+                                          orientation: "left auto",
                                           autoclose: true,
                                           startview: 2,
                                           todayHighlight: true
@@ -183,6 +202,44 @@
           //1
           $("li#lxcss").addClass("active");
      }
-</script>
+
+     // 默认下拉框
+      window.onload=function(){
+                              //所属园区
+                              var optElements = document.getElementById("selId").children;
+
+                              var optValue = document.getElementById("vaId").value;
+
+                              for(var opt in optElements){
+                                  if(optElements[opt].value == optValue){
+                                      optElements[opt].selected="selected";
+                                  }
+                              }
+
+                              //货币分类
+                              var optElements = document.getElementById("selhbId").children;
+                              
+                              var optValue = $("#hbIdval").val();
+                              
+
+                              for(var opt in optElements){
+                                  if(optElements[opt].value == optValue){
+                                      optElements[opt].selected="selected";
+                                  }
+                              }
+
+                              //行业
+                              var optElements = document.getElementById("selhyId").children;
+                              
+                              var optValue = $("#hyIdval").val();
+                              
+
+                              for(var opt in optElements){
+                                  if(optElements[opt].value == optValue){
+                                      optElements[opt].selected="selected";
+                                  }
+                              }
+                          }
+  </script>
 
 @stop

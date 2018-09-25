@@ -10,8 +10,10 @@ use App\Models\investigating;
 use App\Models\Fxscsp;
 use App\Models\Xmbgjsp;
 use App\Models\ItemsPhase;
+use App\Models\PhaseAcessory;
 
 use App\Handlers\CreateWord;
+use App\Handlers\FileUploadHandler;
 
 class ItemsPhasesController extends Controller
 {
@@ -43,6 +45,7 @@ class ItemsPhasesController extends Controller
         if($request->btn_type == 'cscl')
         {   
             //初审材料
+            $file = $request->business_license;
         	//录入的字段白名单
         	$data = $request->only([
         							'loans_use',
@@ -61,13 +64,14 @@ class ItemsPhasesController extends Controller
             $table = new CreateItemsTable();
             //提交的阶段
             $num = 1;
-           
+            
             //调用入库方法
-            $status = $this->phase_create($data,$iid,$status,$table,$num);
+            $status = $this->phase_create($data,$iid,$status,$table,$num,$file);
             //是否调用成功
             if($status){
 
                 return back();
+                // dd($status);
 
             }else{
 
@@ -190,21 +194,149 @@ class ItemsPhasesController extends Controller
         }
     }
 
+    //更新表单数据
+    public function update_tables($iid,Request $request)
+    {   
+        //$iid 项目id $request 数据集合
+        //初审材料
+        if($request->btn_type == 'cscl')
+        {
+            //数据库 初审材料
+            $table = new CreateItemsTable();
+
+            //获取表单数据 设置白名单
+            $data = $request->only([
+                                'loans_use',
+                                'borrower',
+                                'deadline',
+                                'rate',
+                                'measure',
+                                'loans_money',
+                                'table_status',
+                                'items_id'
+                                ]);
+            //获取项目id
+            $data['items_id'] = $iid;
+            //获取操作状态
+            $status = $request->table_status;
+            //第一个阶段
+            $pid = 1;
+            //调用更新方法
+            $status = $this->phase_update($table,$data,$pid,$status);
+            //判断是否执行成功
+            if($status){
+
+                return back();
+            }
+        }
+
+        //保前尽职调查
+        if($request->btn_type == 'bqjzdc')
+        {   
+            //设置操作数据库
+            $table = new investigating();
+            //数据库白名单设置
+            $data = $request->only([
+                                    'jrjg_name',
+                                    'dklx',
+                                    'fzze',
+                                    'dbye',
+                                    'dkln',
+                                    'dkqx',
+                                    'ssyq',
+                                    'sshy',
+                                    'users_name',
+                                    'dc_time',
+                                    'dc_yijian',
+                                    'remark',
+                                    'table_status'
+                                ]);
+             //获取项目id
+            $data['items_id'] = $iid;
+            //获取操作状态
+            $status = $request->table_status;
+            //第一个阶段
+            $pid = 2;
+            //调用更新方法
+            $status = $this->phase_update($table,$data,$pid,$status);
+            //判断是否执行成功
+            if($status){
+
+                return back();
+            }
+        }
+
+    }
+
+    //处理更新表单数据方法
+    public function phase_update($table,$data,$pid,$status)
+    {   
+        //$table 操作的数据库 $data 白名单字段 $iid 项目id $pid阶段id $status 操作状态
+
+        //判断当前状态
+        if($status == 2)
+        {   
+            //更新数据
+            $status = $table::where('items_id',$data['items_id'])->update($data);
+
+            //执行成功后返回真假数据
+            return $status;
+
+        }else if($status == 1)
+        {
+            //状态改为1
+            $data['table_status'] = $status;
+            //数据更新入库
+            $stu = $table::where('items_id',$data['items_id'])->update($data);
+            //判断是否更新成功
+            if($stu){
+                //修改阶段状态
+                $status = ItemsPhaseCreate::where([
+                                                    ['items_id', '=', $data['items_id']],
+                                                    ['phases_id','=',$pid]
+                                                ])->update(['phases_status'=>'完成']);
+
+                return $status;                 
+            } 
+        }
+
+    }
+
     //处理录入阶段表单数据方法
-    public function phase_create($data,$iid,$status,$table,$num)
+    public function phase_create($data,$iid,$status,$table,$num,$file)
     {
 
         //data 录入的字段白名单 iid项目id status 提交的状态 table数据表 num 第几阶段
+        $uploader = new FileUploadHandler();
+        
         //项目id
         $data['items_id'] = $iid;
         //入库时间
         $data['created_at'] = date('Y-m-d H:i:s');
 
+
         //判断提交的状态
         //状态等于2的时候
         if($status == 2)
-        {
+        {   
 
+            //判断是否有文件数据
+            if($file){
+               //遍历文件
+                foreach($file as $fv){
+
+                    //储存到指定位置
+                    $url = $uploader->save($fv,$iid);
+                    //获取返回地址
+                    $accesory = PhaseAcessory::insert([
+                                                        'items_id'  => $iid,
+                                                        'phases_id' => $num,
+                                                        'file_name' => $url['file_name'],
+                                                        'site_url'  =>  $url['path'],
+                                                        'created_at' => date('Y-m-d H:i:s')
+                                                        ]);
+                } 
+            }
             //状态值赋值为2
             $data['table_status'] = 2;
 
@@ -224,7 +356,24 @@ class ItemsPhasesController extends Controller
             //或者等于1的时候 完成阶段录入
         }   elseif($status == 1)
             {
+                //判断是否有文件数据
+                if($file){
+                   //遍历文件
+                    foreach($file as $fv){
 
+                        //储存到指定位置
+                        $url = $uploader->save($fv,$iid);
+
+                        //获取返回地址
+                        $accesory = PhaseAcessory::insert([
+                                                            'items_id'  => $iid,
+                                                            'phases_id' => $num,
+                                                            'file_name' => $url['file_name'],
+                                                            'site_url'  =>  $url['path'],
+                                                            'created_at' => date('Y-m-d H:i:s')
+                                                            ]);
+                    } 
+                }
                 //状态值赋值为1
                 $data['table_status'] = 1;
                 //数据入库
@@ -243,111 +392,5 @@ class ItemsPhasesController extends Controller
             }
 
     } 
-
-    //更新表单数据
-    public function update_tables($pid,Request $request)
-    {   
-        //初审材料
-        $phasecreate = new CreateItemsTable();
-        //保前尽职调查调查
-        $bqjzdc = new investigating();
-
-        //保前尽职调查
-        if($request->btn_type == 'bqjzdc')
-        {
-            $data = $request->only([
-                                    'jrjg_name',
-                                    'dklx',
-                                    'fzze',
-                                    'dbye',
-                                    'dkln',
-                                    'dkqx',
-                                    'ssyq',
-                                    'sshy',
-                                    'users_name',
-                                    'dc_time',
-                                    'dc_yijian',
-                                    'remark',
-                                    'table_status'
-                                ]);
-
-            $status = $request->table_status;
-            //判断提交状态
-            if($status == 2){
-
-                $bqjzdc::where('id',$pid)->update($data);
-                return back();
-
-            }else if($status == 1){
-
-                $data['table_status'] = 1;
-                //数据入库
-                $bqjzdc::where('id',$pid)->update($data);
-                //获取项目id
-                $iid = $bqjzdc::where('id',$pid)->select('items_id')->first();
-                //修改阶段状态
-                    if($bqjzdc)
-                    {
-                            ItemsPhaseCreate::where('items_id', '=', $iid['items_id'])
-                                                ->where('phases_id','=',2)
-                                                ->update(['phases_status'=>'完成']);
-                        return back();
-                    }
-            }
-        }
-
-        //初审材料
-        if($request->btn_type == 'cscl')
-        {
-    		//获取表单数据
-    	   	$data = $request->only([
-    							'loans_use',
-    							'borrower',
-    							'deadline',
-    							'rate',
-    							'measure',
-    							'loans_money',
-    							'table_status',
-    							'items_id',
-    							'created_at'
-    							]);
-  	         //文档阶段
-            $type = $request->btn_type;
-
-            $createdword = new CreateWord();
-
-            $iid = 1;
-            //调用word模板方法
-            $url = $createdword->create($data,$type,$iid);
-            dd($url);exit;
-        	//获取操作状态
-        	$status = $request->table_status;
-        	//判断修改状态
-        	if($status == 2)
-            {
-        		//修改表单数据
-        		$phasecreate::where('id',$pid)->update($data);
-                return back();
-
-        	}else if($status == 1)
-            {
-        		$data['table_status'] = 1;
-    	    	//数据入库
-    	    	$phasecreate::where('id',$pid)->update($data);
-    	    	//获取项目id
-    	    	$iid = $phasecreate::where('id',$pid)->select('items_id')->first();
-    			//修改阶段状态
-    			    if($phasecreate)
-    			    {
-    			    		ItemsPhaseCreate::where('items_id', '=', $iid['items_id'])
-    			    							->where('phases_id','=',1)
-    											->update(['phases_status'=>'完成']);
-    					return back();
-    			    }
-        	}
-        }
-        	
-
-    }
     
 }

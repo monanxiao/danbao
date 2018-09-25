@@ -44,7 +44,7 @@
                         <td style='text-align:center;'>{{ $cv->have_default }}</td>
                         <td style='text-align:center;'>{{ $cv->annual_income }}</td>
                         <td style='text-align:center;white-space: nowrap;'>
-                            <a href="#"  class="btn btn-success btn-sm">
+                            <a href="{{ URL('natural/items',$cv->id) }}"  class="btn btn-success btn-sm">
                             项目
                             </a>&nbsp;
                             <a href="{{ URL('natural',$cv->id) }}" class="btn btn-success btn-sm">

@@ -10,6 +10,7 @@ use App\Models\ItemsPhase;
 use App\Models\Company;
 use App\Models\CreateItemsTable;
 use App\Models\investigating;
+use App\Models\PhaseAcessory;
 
 class ItemsController extends Controller
 {
@@ -88,12 +89,19 @@ class ItemsController extends Controller
         //取出项目名称
         $items = Item::find($iid);
         $company = Company::find($items->companys_id);
+
         //取出项目阶段
-        $phase =  Item::LeftJoin('items_phase_creates','items.id','=','items_phase_creates.items_id')
-                            ->LeftJoin('items_phases','items_phase_creates.phases_id','=','items_phases.id')
+        $phase =    Item::LeftJoin('items_phase_creates','items.id','=','items_phase_creates.items_id')
+                                ->LeftJoin('items_phases','items_phase_creates.phases_id','=','items_phases.id')
+                                ->where('items.id',$iid)
+                                ->select('items.*','items_phases.*','items_phase_creates.phases_status')
+                                ->get();
+        //取出项目阶段附件
+        $url =  Item::LeftJoin('phase_acessories','items.id','=','phase_acessories.items_id')
                             ->where('items.id',$iid)
-                            ->select('items.*','items_phases.*','items_phase_creates.phases_status')
+                            ->select('phase_acessories.phases_id','phase_acessories.site_url','phase_acessories.file_name')
                             ->get();
+
         
         //调用方法获取阶段数据
         //第一阶段数据
@@ -116,7 +124,7 @@ class ItemsController extends Controller
         //第三阶段数据
        
                             
-        return view('items.itemsPhaseShow',compact('items','phase','company','phasetable','phasestatus','bqjzdc_data','bqjzdc_status'));
+        return view('items.itemsPhaseShow',compact('items','phase','company','phasetable','phasestatus','bqjzdc_data','bqjzdc_status','url'));
     }
     //获取阶段数据
     public function phaseDataGet($iid,$data){
