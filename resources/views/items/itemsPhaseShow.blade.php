@@ -240,6 +240,17 @@
                                   }
                               }
                           }
+      function doword(doc){ 
+         var WordApp=null;
+         try{
+            WordApp = new ActiveXObject("Word.Application"); 
+         }catch(e){
+            alert("IE的安全级别过高!请在IE的菜单栏中:工具——INTERNET选项——安全---本地Intranet——自定义级别——对没有标记为安全的activeX控件...那句改为启用或提示!");
+            return;
+        }
+        WordApp.Application.Visible=true;
+        WordApp.Documents.Add(doc,true);
+    }
   </script>
 
 @stop

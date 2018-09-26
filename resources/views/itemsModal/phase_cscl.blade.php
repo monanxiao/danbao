@@ -401,7 +401,7 @@
                     <td colspan="5">
                       <span style='margin-left:20px;'><a target="_blank"  href="{{ $uv->site_url }}">{{ $uv->file_name }}</a></span>
                       <span style='float:right;margin-right: 20px;'><a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}">下载</a></span>
-                      <span style='float:right;margin-right: 20px;'><a target="_blank"  href="{{ $uv->site_url }}">预览</a></span>
+                      <span style='float:right;margin-right: 20px;'><a target="_blank" onClick="doword('{{ URL('') . $uv->site_url }}')">预览</a></span>
                     </td>
                   </tr> 
                     @endif
@@ -412,7 +412,7 @@
                 <tr>
                   <td colspan="5">
                     <div class="file-loading">
-                        <input id="file-1" name='business_license[]' type="file" class="file" data-upload-url="#">
+                        <input id="file-1" name='business_license[]'  multiple="multiple" type="file" class="file" data-upload-url="#">
                     </div>
                   </td>
                 </tr>

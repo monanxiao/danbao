@@ -1,6 +1,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name=renderer content=ie-comp />
     <title>@yield('title','担保系统')-工投金融担保系统</title>
     <!-- BOOTSTRAP STYLES-->
     <link href="/assets/css/bootstrap.css" rel="stylesheet" />
@@ -30,5 +31,7 @@
     <link href="/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet">
     <script src="/dist/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
     <script src="/dist/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/css/imgqiehuan.css">
+   
 
 </head>

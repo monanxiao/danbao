@@ -12,10 +12,11 @@
   <li role="presentation" id='lxcss' class="active">
     <a href="#fkhbjb"  role="tab" data-toggle="tab">风险控制委员会表决表</a>
   </li>
-  <li role="presentation" id='lxcss' class="">
+  <li role="presentation" id='dbcss' class="">
 	 <a href="#fkhjyb"  role="tab" data-toggle="tab">风险控制委员会决议</a>
   </li>
 </ul>
+@if($fxscsp_status == 0 )
 <!-- 面板区开始 -->
 <form action="" method='POST' enctype="multipart/form-data">
    {{ csrf_field() }}
@@ -29,6 +30,7 @@
             <table class="table table-striped table-bordered table-hover">
                     <tr> 
                         <td style='width:335px;'>
+                          <fieldset disabled>
                           <div class="form-group">
                               <label class="sr-only" for="exampleInputAmount">贷款机构</label>
                               <div class="input-group">
@@ -36,27 +38,32 @@
                                   <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
                               </div>
                           </div>
+                        </fieldset>
                         </td> 
                         <td>
+                          <fieldset disabled>
                           <div class="form-group">
                               <label class="sr-only" for="exampleInputAmount">担保金额</label>
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保金额</i></div>
                                   <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money'] }}' maxlength='3'>
-                                 
                               </div>
                           </div>
+                        </fieldset>
                         </td>
                         <td>
+                          <fieldset disabled>
                           <div class="form-group">
                               <label class="sr-only" for="exampleInputAmount">担保费</label>
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保费</i></div>
-                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money']*$phasetable['rate']/100 }}' maxlength='50'>
                               </div>
                           </div>
+                        </fieldset>
                         </td>
                         <td>
+                          <fieldset disabled>
                           <div class="form-group">
                               <label class="sr-only" for="exampleInputAmount">担保费率</label>
                               <div class="input-group">
@@ -64,10 +71,12 @@
                                   <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['rate'] }}' maxlength='50'>
                               </div>
                           </div>
+                        </fieldset>
                         </td>                   
                     </tr> 
                     <tr>
                         <td>
+                          <fieldset disabled>
                           <div class="form-group">
                               <label class="sr-only" for="exampleInputAmount">客户名称</label>
                               <div class="input-group">
@@ -75,6 +84,7 @@
                                   <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->company_name }}' maxlength='50'>
                               </div>
                           </div>
+                        </fieldset>
                         </td>
                         <td>
                           <div class="form-group">
@@ -86,6 +96,7 @@
                           </div>
                         </td>
                         <td>
+                          <fieldset disabled>
                           <div class="form-group">
                               <label class="sr-only" for="exampleInputAmount">担保期限</label>
                               <div class="input-group">
@@ -93,6 +104,7 @@
                                   <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['deadline'] }}' maxlength='50'>
                               </div>
                           </div>
+                        </fieldset>
                         </td>
                         <td>
                           <div class="form-group">
@@ -106,6 +118,7 @@
                     </tr>
                     <tr>
                         <td colspan="4" style='width:500px;'>
+                          <fieldset disabled>
                           <div class="form-group">
                               <label class="sr-only" for="exampleInputAmount">反担保措施</label>
                               <div class="input-group">
@@ -113,6 +126,7 @@
                                   <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['measure'] }}' maxlength='50'>
                               </div>
                           </div>
+                        </fieldset>
                         </td>
                     </tr>
                     <tr>
@@ -143,45 +157,43 @@
                               <label class="sr-only" for="exampleInputAmount">主办项目经理</label>
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;主办项目经理</i></div>
-                                  <input type="text" name='item_name' class="form-control" id="exampleInputAmount" value='张三' maxlength='50'>
+                                  <input type="text" name='item_name' class="form-control" id="exampleInputAmount" placeholder="请输入经理" maxlength='50'>
                               </div>
                           </div>
                         </td>
                     </tr>
                     <tr>
-                      <th colspan="5" style='text-align: center'><h3>附件上传</h3></th>
+                        <td colspan="4" style='width:500px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">表决意见</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;表决意见</i></div>
+                                  <input type="text" name='bjyj' class="form-control" id="exampleInputAmount" placeholder="请输入表决意见" maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
                     </tr>
                     <tr>
-                      <td colspan="5">
-                        <div class="file-loading">
-                            <input id="file-1" name='business_license' type="file" class="file" data-upload-url="#">
-                        </div>
-                      </td>
+                        <td colspan="4" style='width:500px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">风险控制要求</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;风险控制要求</i></div>
+                                  <input type="text" name='fxkzyq' class="form-control" id="exampleInputAmount" placeholder="请输入风险控制要求" maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
                     </tr>
+
             </table>
                     <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">
-                      立即打印
-                    </button>
-                    <span style='color:red;font-size:14px;'>(打印风控会表决表)</span>
-                     <button type="submit" class="btn btn-primary">
-                      立即打印
-                    </button>
-                    <span style='color:red;font-size:14px;'>(打印担保函)</span>
-                    <button type="submit" class="btn btn-primary" onclick="save(this)">
-                    保存
-                    </button>
-                    <span style='color:red;font-size:14px;'>(保存数据可修改)</span> 
-                    <button type="submit" class="btn btn-success" onclick="ok(this)">
-                    完成
-                    </button>
-                    <span style='color:red;font-size:14px;'>(进入下一阶段)</span>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>   
-                    <button type="submit" class="btn btn-warning">
-                    提审<br>
-                    </button>
-                    <span style='color:red;font-size:14px;'>(领导审批)</span>                      
-                    </div>
+                          <button type="button" class="btn btn-default" data-dismiss="modal">
+                          取消
+                          </button> 
+                          <a href="#fkhjyb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="next(this)" data-toggle="tab">
+                          下一步
+                          </a>                        
+                        </div>
 			    </div>
           <hr>
 			</div>
@@ -192,123 +204,31 @@
       <div class="form-group">
           <div class="modal-body">
             <table class="table table-striped table-bordered table-hover">
-                    <tr> 
-                        <td style='width:335px;'>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">贷款机构</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;贷款机构</i></div>
-                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
-                              </div>
-                          </div>
-                        </td> 
-                        <td>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">担保金额</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保金额</i></div>
-                                  <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money'] }}' maxlength='3'>
-                                 
-                              </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">担保费</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保费</i></div>
-                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
-                              </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">担保费率</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保费率</i></div>
-                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['rate'] }}' maxlength='50'>
-                              </div>
-                          </div>
-                        </td>                   
-                    </tr> 
                     <tr>
-                        <td>
+                      <td style='width:715px;'>
                           <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">客户名称</label>
+                              <label class="sr-only" for="exampleInputAmount">评审会参会成员</label>
                               <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;客户名称</i></div>
-                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->company_name }}' maxlength='50'>
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;参会成员</i></div>
+                                  <input type="text" name='user_vip' class="form-control" id="exampleInputAmount" placeholder="评审会参会成员" maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                      <td>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">同意票数</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;同意票数</i></div>
+                                  <input type="text" name='consent' class="form-control" id="exampleInputAmount" placeholder="请输入同意票数" maxlength='50'>
                               </div>
                           </div>
                         </td>
                         <td>
                           <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">担保性质</label>
+                              <label class="sr-only" for="exampleInputAmount">反对票数</label>
                               <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保性质</i></div>
-                                  <input type="text" name='assure' class="form-control" id="exampleInputAmount" placeholder="输入担保性质" maxlength='50'>
-                              </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">担保期限</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保期限</i></div>
-                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['deadline'] }}' maxlength='50'>
-                              </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">风险经理</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;风险经理</i></div>
-                                  <input type="text" name='risk_name' class="form-control" id="exampleInputAmount" placeholder="输入风险经理" maxlength='50'>
-                              </div>
-                          </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" style='width:500px;'>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">反担保措施</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;反担保措施</i></div>
-                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['measure'] }}' maxlength='50'>
-                              </div>
-                          </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" style='width:500px;'>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">其他要求</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;其他要求</i></div>
-                                  <input type="text" name='content' class="form-control" id="exampleInputAmount" placeholder="请输入其他要求" maxlength='50'>
-                              </div>
-                          </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style='width:500px;'>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">备注</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;备注</i></div>
-                                  <input type="text" name='commit' class="form-control" id="exampleInputAmount" placeholder="请输入备注" maxlength='50'>
-                              </div>
-                          </div>
-                        </td>
-                         
-                        
-                        <td>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">主办项目经理</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;主办项目经理</i></div>
-                                  <input type="text" name='item_name' class="form-control" id="exampleInputAmount" value='张三' maxlength='50'>
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;反对票数</i></div>
+                                  <input type="text" name='oppose' class="form-control" id="exampleInputAmount" placeholder="请输入反对票数" maxlength='50'>
                               </div>
                           </div>
                         </td>
@@ -319,7 +239,7 @@
                               <label class="sr-only" for="exampleInputAmount">项目实施要求</label>
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;实施要求</i></div>
-                                  <input type="text" name='commit' class="form-control" id="exampleInputAmount" placeholder="项目实施要求" maxlength='50'>
+                                  <input type="text" name='items_yq' class="form-control" id="exampleInputAmount" placeholder="项目实施要求" maxlength='50'>
                               </div>
                           </div>
                         </td>
@@ -330,7 +250,7 @@
                               <label class="sr-only" for="exampleInputAmount">反担保落实要件</label>
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;反担保落实要件</i></div>
-                                  <input type="text" name='commit' class="form-control" id="exampleInputAmount" placeholder="反担保落实要件" maxlength='50'>
+                                  <input type="text" name='fdb_ls' class="form-control" id="exampleInputAmount" placeholder="反担保落实要件" maxlength='50'>
                               </div>
                           </div>
                         </td>
@@ -341,7 +261,7 @@
                               <label class="sr-only" for="exampleInputAmount">主任委员意见</label>
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;主任委员意见</i></div>
-                                  <input type="text" name='commit' class="form-control" id="exampleInputAmount" placeholder="主任委员意见" maxlength='50'>
+                                  <input type="text" name='zrwy' class="form-control" id="exampleInputAmount" placeholder="主任委员意见" maxlength='50'>
                               </div>
                           </div>
                         </td>
@@ -352,18 +272,7 @@
                               <label class="sr-only" for="exampleInputAmount">评审会决议</label>
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;评审会决议</i></div>
-                                  <input type="text" name='commit' class="form-control" id="exampleInputAmount" placeholder="评审会决议" maxlength='50'>
-                              </div>
-                          </div>
-                        </td>
-                    </tr>
-                    <tr>
-                      <td colspan="4" style='width:500px;'>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">评审会参会成员</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;参会成员</i></div>
-                                  <input type="text" name='commit' class="form-control" id="exampleInputAmount" placeholder="评审会参会成员" maxlength='50'>
+                                  <input type="text" name='pshjy' class="form-control" id="exampleInputAmount" placeholder="评审会决议" maxlength='50'>
                               </div>
                           </div>
                         </td>
@@ -374,11 +283,37 @@
                     <tr>
                       <td colspan="5">
                         <div class="file-loading">
-                            <input id="file-1" name='business_license' type="file" class="file" data-upload-url="#">
+                            <input id="file-1" name='business_license[]'multiple="multiple" type="file" class="file" data-upload-url="#">
                         </div>
                       </td>
                     </tr>
             </table>
+            <div class="modal-footer">
+                   {{--  <button type="submit" class="btn btn-primary">
+                      立即打印
+                    </button>
+                    <span style='color:red;font-size:14px;'>(打印风控会表决表)</span>
+                     <button type="submit" class="btn btn-primary">
+                      立即打印
+                    </button>
+                    <span style='color:red;font-size:14px;'>(打印担保函)</span> --}}
+                    <a href="#fkhbjb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="last(this)" data-toggle="tab">
+                        上一步
+                    </a>
+                    <button type="submit" class="btn btn-primary" onclick="save(this)">
+                    保存
+                    </button>
+                    <span style='color:red;font-size:14px;'>(保存数据可修改)</span> 
+                    <button type="submit" class="btn btn-success" onclick="ok(this)">
+                    完成
+                    </button>
+                    <span style='color:red;font-size:14px;'>(进入下一阶段)</span>
+                    <button type="submit" class="btn btn-warning">
+                    提审<br>
+                    </button>
+                    <span style='color:red;font-size:14px;'>(领导审批)</span>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>                       
+                    </div>
           </div>
       </div>
 </div>
@@ -387,6 +322,691 @@
 	</div>
 	<!-- 面板区结束 -->
 </form>
+  @elseif($fxscsp_data['table_status']  == 2)
+
+  <!-- 面板区开始 -->
+<form action="{{ URL('items/phase/edit',$fxscsp_data['id']) }}" method='POST' enctype="multipart/form-data">
+   {{ csrf_field() }}
+   <input type="hidden" name='btn_type' value='fxhbjb'>
+   <input type="hidden" id='table_status' name='table_status' value=''>
+  <div class="tab-content">
+  <!-- 风控会表决表开始 -->
+    <div role="tabpanel" class="tab-pane active" id="fkhbjb">
+      <div class="form-group">
+          <div class="modal-body"> 
+            <table class="table table-striped table-bordered table-hover">
+                    <tr> 
+                        <td style='width:335px;'>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">贷款机构</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;贷款机构</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td> 
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">担保金额</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保金额</i></div>
+                                  <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money'] }}' maxlength='3'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">担保费</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保费</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money']*$phasetable['rate']/100 }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">担保费率</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保费率</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['rate'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>                   
+                    </tr> 
+                    <tr>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">客户名称</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;客户名称</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->company_name }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">担保性质</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保性质</i></div>
+                                  <input type="text" name='assure' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['assure'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">担保期限</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保期限</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['deadline'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">风险经理</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;风险经理</i></div>
+                                  <input type="text" name='risk_name' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['risk_name'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style='width:500px;'>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">反担保措施</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;反担保措施</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['measure'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style='width:500px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">其他要求</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;其他要求</i></div>
+                                  <input type="text" name='content' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['content'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style='width:500px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">备注</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;备注</i></div>
+                                  <input type="text" name='commit' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['commit'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                         
+                        
+                        <td>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">主办项目经理</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;主办项目经理</i></div>
+                                  <input type="text" name='item_name' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['item_name'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style='width:500px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">表决意见</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;表决意见</i></div>
+                                  <input type="text" name='bjyj' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['bjyj'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style='width:500px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">风险控制要求</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;风险控制要求</i></div>
+                                  <input type="text" name='fxkzyq' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['fxkzyq'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+
+            </table>
+                    <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">
+                          取消
+                          </button> 
+                          <a href="#fkhjyb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="next(this)" data-toggle="tab">
+                          下一步
+                          </a>                        
+                        </div>
+          </div>
+          <hr>
+      </div>
+    </div> 
+    <!-- 风控会表决表结束 -->
+{{-- 风控会决议表开始 --}}
+<div role="tabpanel" class="tab-pane" id="fkhjyb">
+      <div class="form-group">
+          <div class="modal-body">
+            <table class="table table-striped table-bordered table-hover">
+                    <tr>
+                      <td style='width:715px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">评审会参会成员</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;参会成员</i></div>
+                                  <input type="text" name='user_vip' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['user_vip'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                      <td>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">同意票数</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;同意票数</i></div>
+                                  <input type="text" name='consent' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['consent'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">反对票数</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;反对票数</i></div>
+                                  <input type="text" name='oppose' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['oppose'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style='width:500px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">项目实施要求</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;实施要求</i></div>
+                                  <input type="text" name='items_yq' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['items_yq'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style='width:500px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">反担保落实要件</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;反担保落实要件</i></div>
+                                  <input type="text" name='fdb_ls' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['fdb_ls'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style='width:500px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">主任委员意见</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;主任委员意见</i></div>
+                                  <input type="text" name='zrwy' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['zrwy'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style='width:500px;'>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">评审会决议</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;评审会决议</i></div>
+                                  <input type="text" name='pshjy' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['pshjy'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </td>
+                    </tr>
+                    <tr>
+                      <th colspan="5" style='text-align: center'><h3>已上传附件</h3></th>
+                    </tr>
+                     @foreach($url as $uv)
+                     @if($uv->phases_id == 4)
+                    <tr>
+                      <td colspan="5">
+                        <span style='margin-left:20px;'><a target="_blank"  href="{{ $uv->site_url }}">{{ $uv->file_name }}</a></span>
+                        <span style='float:right;margin-right: 20px;'><a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}">下载</a></span>
+                        <span style='float:right;margin-right: 20px;'><a target="_blank"  href="{{ $uv->site_url }}">预览</a></span>
+                      </td>
+                    </tr>
+                    @endif
+                    @endforeach
+                    <tr>
+                      <th colspan="5" style='text-align: center'><h3>附件上传</h3></th>
+                    </tr>
+                    <tr>
+                      <td colspan="5">
+                        <div class="file-loading">
+                            <input id="file-1" name='business_license[]'multiple="multiple" type="file" class="file" data-upload-url="#">
+                        </div>
+                      </td>
+                    </tr>
+            </table>
+            <div class="modal-footer">
+                   {{--  <button type="submit" class="btn btn-primary">
+                      立即打印
+                    </button>
+                    <span style='color:red;font-size:14px;'>(打印风控会表决表)</span>
+                     <button type="submit" class="btn btn-primary">
+                      立即打印
+                    </button>
+                    <span style='color:red;font-size:14px;'>(打印担保函)</span> --}}
+                    <a href="#fkhbjb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="last(this)" data-toggle="tab">
+                        上一步
+                    </a>
+                    <button type="submit" class="btn btn-primary" onclick="save(this)">
+                    更新
+                    </button>
+                    <span style='color:red;font-size:14px;'>(更新数据可修改)</span> 
+                    <button type="submit" class="btn btn-success" onclick="ok(this)">
+                    完成
+                    </button>
+                    <span style='color:red;font-size:14px;'>(进入下一阶段)</span>
+                    <button type="submit" class="btn btn-warning">
+                    提审<br>
+                    </button>
+                    <span style='color:red;font-size:14px;'>(领导审批)</span>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>                       
+                    </div>
+          </div>
+      </div>
+</div>
+{{-- 风控会决议表结束 --}}
+  
+  </div>
+  <!-- 面板区结束 -->
+</form>
+  @elseif($fxscsp_data['table_status']  == 1)
+    <!-- 面板区开始 -->
+<form action="{{ URL('items/phase/edit',$fxscsp_data['id']) }}" method='POST' enctype="multipart/form-data">
+   {{ csrf_field() }}
+   <input type="hidden" name='btn_type' value='fxhbjb'>
+   <input type="hidden" id='table_status' name='table_status' value=''>
+  <div class="tab-content">
+  <!-- 风控会表决表开始 -->
+    <div role="tabpanel" class="tab-pane active" id="fkhbjb">
+      <div class="form-group">
+          <div class="modal-body"> 
+            <table class="table table-striped table-bordered table-hover">
+                    <tr> 
+                        <td style='width:335px;'>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">贷款机构</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;贷款机构</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td> 
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">担保金额</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保金额</i></div>
+                                  <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money'] }}' maxlength='3'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">担保费</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保费</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money']*$phasetable['rate']/100 }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">担保费率</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保费率</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['rate'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>                   
+                    </tr> 
+                    <tr>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">客户名称</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;客户名称</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->company_name }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">担保性质</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保性质</i></div>
+                                  <input type="text" name='assure' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['assure'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">担保期限</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保期限</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['deadline'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">风险经理</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;风险经理</i></div>
+                                  <input type="text" name='risk_name' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['risk_name'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style='width:500px;'>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">反担保措施</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;反担保措施</i></div>
+                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['measure'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style='width:500px;'>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">其他要求</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;其他要求</i></div>
+                                  <input type="text" name='content' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['content'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style='width:500px;'>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">备注</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;备注</i></div>
+                                  <input type="text" name='commit' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['commit'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                         
+                        
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">主办项目经理</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;主办项目经理</i></div>
+                                  <input type="text" name='item_name' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['item_name'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style='width:500px;'>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">表决意见</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;表决意见</i></div>
+                                  <input type="text" name='bjyj' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['bjyj'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style='width:500px;'>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">风险控制要求</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;风险控制要求</i></div>
+                                  <input type="text" name='fxkzyq' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['fxkzyq'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+
+            </table>
+                    <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">
+                          取消
+                          </button> 
+                          <a href="#fkhjyb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="next(this)" data-toggle="tab">
+                          下一步
+                          </a>                        
+                        </div>
+          </div>
+          <hr>
+      </div>
+    </div> 
+    <!-- 风控会表决表结束 -->
+{{-- 风控会决议表开始 --}}
+<div role="tabpanel" class="tab-pane" id="fkhjyb">
+      <div class="form-group">
+          <div class="modal-body">
+            <table class="table table-striped table-bordered table-hover">
+                    <tr>
+                      <td style='width:715px;'>
+                        <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">评审会参会成员</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;参会成员</i></div>
+                                  <input type="text" name='user_vip' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['user_vip'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                      <td>
+                        <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">同意票数</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;同意票数</i></div>
+                                  <input type="text" name='consent' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['consent'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                        <td>
+                          <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">反对票数</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;反对票数</i></div>
+                                  <input type="text" name='oppose' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['oppose'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style='width:500px;'>
+                        <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">项目实施要求</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;实施要求</i></div>
+                                  <input type="text" name='items_yq' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['items_yq'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style='width:500px;'>
+                        <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">反担保落实要件</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;反担保落实要件</i></div>
+                                  <input type="text" name='fdb_ls' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['fdb_ls'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style='width:500px;'>
+                        <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">主任委员意见</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;主任委员意见</i></div>
+                                  <input type="text" name='zrwy' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['zrwy'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4" style='width:500px;'>
+                        <fieldset disabled>
+                          <div class="form-group">
+                              <label class="sr-only" for="exampleInputAmount">评审会决议</label>
+                              <div class="input-group">
+                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;评审会决议</i></div>
+                                  <input type="text" name='pshjy' class="form-control" id="exampleInputAmount" value='{{ $fxscsp_data['pshjy'] }}' maxlength='50'>
+                              </div>
+                          </div>
+                        </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                      <th colspan="5" style='text-align: center'><h3>已上传附件</h3></th>
+                    </tr>
+                     @foreach($url as $uv)
+                     @if($uv->phases_id == 4)
+                    <tr>
+                      <td colspan="5">
+                        <span style='margin-left:20px;'><a target="_blank"  href="{{ $uv->site_url }}">{{ $uv->file_name }}</a></span>
+                        <span style='float:right;margin-right: 20px;'><a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}">下载</a></span>
+                        <span style='float:right;margin-right: 20px;'><a target="_blank"  href="{{ $uv->site_url }}">预览</a></span>
+                      </td>
+                    </tr>
+                    @endif
+                    @endforeach
+                    <tr>
+                      <td colspan="5">
+                        <div class="boss">
+                       <div class="bigimg">
+                        <img src="" height="350" width="350" id="spic"> 
+                       </div>
+                       <div class="xia"> <a class="prev"><</a> <a class="next">></a>
+                        <div class="items">
+                        <ul>
+                          @foreach($url as $uv)
+                            @if($uv->phases_id == 4)
+                              <li><img src="{{ $uv->site_url }}" id='imgsrc' height="56" width="56"></li>
+                            @endif
+                          @endforeach
+                        </ul>
+                        </div>
+                       </div>
+                    </div>
+                    <script>
+                      var src = document.getElementById('imgsrc').src;
+                      document.getElementById("spic").src=src;
+                    </script>
+                      </td>
+                    </tr>
+            </table>
+            <div>
+              <h3 style='text-align: center;'>进入下一阶段</h3>
+              <div style='text-align: center;'>
+                <button class='btn btn-warning' style='margin-right: 15px;'>担保函</button>
+                <button class='btn btn-warning' style='margin-right: 15px;'>项目变更及审批</button>
+                <button class='btn btn-warning' style='margin-right: 15px;'>合同起草</button>
+              </div>
+            </div>
+            <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                      立即打印
+                    </button>
+                    <span style='color:red;font-size:14px;'>(打印风险控制委员会表决表)</span>  
+                    <button type="submit" class="btn btn-primary">
+                      立即打印
+                    </button>
+                    <span style='color:red;font-size:14px;'>(打印风险控制委员会决议表)</span>
+                    <a href="#fkhbjb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="last(this)" data-toggle="tab">
+                        上一步
+                    </a>
+                    <button type="submit" class="btn btn-warning">
+                    提审<br>
+                    </button>
+                    <span style='color:red;font-size:14px;'>(领导审批)</span>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>                       
+            </div>
+            
+          </div>
+      </div>
+</div>
+{{-- 风控会决议表结束 --}}
+  
+  </div>
+  <!-- 面板区结束 -->
+</form>
+  @endif
     </div>
   </div>
 </div>

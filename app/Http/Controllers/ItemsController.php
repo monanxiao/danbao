@@ -11,6 +11,7 @@ use App\Models\Company;
 use App\Models\CreateItemsTable;
 use App\Models\investigating;
 use App\Models\PhaseAcessory;
+use App\Models\Fxscsp;
 
 class ItemsController extends Controller
 {
@@ -104,7 +105,7 @@ class ItemsController extends Controller
 
         
         //调用方法获取阶段数据
-        //第一阶段数据
+        //第一阶段数据 初审材料
         $cscl = new CreateItemsTable();
         $cscl_array = $this->phaseDataGet($iid,$cscl);
         //数据集合
@@ -112,7 +113,7 @@ class ItemsController extends Controller
         //数据状态
         $phasestatus = $cscl_array['phasestatus'];
 
-        //第二阶段数据
+        //第二阶段数据 保前尽职调查
         $bqjzdc = new investigating();        
         $bqjzdc_array = $this->phaseDataGet($iid,$bqjzdc);
         //数据集合
@@ -121,10 +122,17 @@ class ItemsController extends Controller
         $bqjzdc_status = $bqjzdc_array['phasestatus'];
         // dd();exit;
 
-        //第三阶段数据
-       
+        //第三阶段数据 反担落实
+        
+        //第四阶段 风险审查审批
+        $fxscsp = new Fxscsp();
+        $fxscsp_array = $this->phaseDataGet($iid,$fxscsp);
+        //数据集合
+        $fxscsp_data = $fxscsp_array['phasetable'];
+        //数据状态
+        $fxscsp_status = $fxscsp_array['phasestatus'];
                             
-        return view('items.itemsPhaseShow',compact('items','phase','company','phasetable','phasestatus','bqjzdc_data','bqjzdc_status','url'));
+        return view('items.itemsPhaseShow',compact('items','phase','company','phasetable','phasestatus','bqjzdc_data','bqjzdc_status','url','fxscsp_data','fxscsp_status'));
     }
     //获取阶段数据
     public function phaseDataGet($iid,$data){

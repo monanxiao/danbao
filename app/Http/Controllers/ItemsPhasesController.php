@@ -81,6 +81,9 @@ class ItemsPhasesController extends Controller
         }elseif ($request->btn_type == 'bqjzdc')
         {
             //保前尽职调查
+            
+            //初审材料
+            $file = $request->business_license;
             //录入的字段白名单
             $data = $request->only([
                                     'items_id',
@@ -106,7 +109,7 @@ class ItemsPhasesController extends Controller
             //提交的阶段
             $num = 2;
             //调用入库方法
-            $status = $this->phase_create($data,$iid,$status,$table,$num);
+            $status = $this->phase_create($data,$iid,$status,$table,$num,$file);
                 //是否调用成功
                 if($status)
                 {
@@ -132,9 +135,19 @@ class ItemsPhasesController extends Controller
                                     'content',
                                     'items_id',
                                     'table_status',
-                                    'created_at'
+                                    'created_at',
+                                    'user_vip',
+                                    'oppose',
+                                    'consent',
+                                    'items_yq',
+                                    'fdb_ls',
+                                    'zrwy',
+                                    'pshjy',
+                                    'bjyj',
+                                    'fxkzyq'
                                 ]);
-
+            //附件
+            $file = $request->business_license;
             //获取提交的状态
             $status = $request->table_status;
             //要录入的数据库
@@ -142,7 +155,7 @@ class ItemsPhasesController extends Controller
             //提交的阶段
             $num = 4;
             //调用入库方法
-            $status = $this->phase_create($data,$iid,$status,$table,$num);
+            $status = $this->phase_create($data,$iid,$status,$table,$num,$file);
                 //是否调用成功
                 if($status)
                 {
@@ -198,6 +211,7 @@ class ItemsPhasesController extends Controller
     public function update_tables($iid,Request $request)
     {   
         //$iid 项目id $request 数据集合
+
         //初审材料
         if($request->btn_type == 'cscl')
         {
@@ -215,6 +229,8 @@ class ItemsPhasesController extends Controller
                                 'table_status',
                                 'items_id'
                                 ]);
+            //获取文件
+             $file = $request->business_license;
             //获取项目id
             $data['items_id'] = $iid;
             //获取操作状态
@@ -222,7 +238,7 @@ class ItemsPhasesController extends Controller
             //第一个阶段
             $pid = 1;
             //调用更新方法
-            $status = $this->phase_update($table,$data,$pid,$status);
+            $status = $this->phase_update($table,$data,$pid,$status,$file);
             //判断是否执行成功
             if($status){
 
@@ -251,6 +267,8 @@ class ItemsPhasesController extends Controller
                                     'remark',
                                     'table_status'
                                 ]);
+            //获取附件
+            $file = $request->business_license;
              //获取项目id
             $data['items_id'] = $iid;
             //获取操作状态
@@ -258,7 +276,52 @@ class ItemsPhasesController extends Controller
             //第一个阶段
             $pid = 2;
             //调用更新方法
-            $status = $this->phase_update($table,$data,$pid,$status);
+            $status = $this->phase_update($table,$data,$pid,$status,$file);
+            //判断是否执行成功
+            if($status){
+
+                return back();
+            }
+        }
+
+        //反担保落实
+        
+        //风险审查审批
+        if($request->btn_type == 'fxhbjb')
+        {   
+            
+            //数据库白名单设置
+            $data = $request->only([
+                                    'risk_name',
+                                    'item_name',
+                                    'assure',
+                                    'commit',
+                                    'content',
+                                    'items_id',
+                                    'table_status',
+                                    'created_at',
+                                    'user_vip',
+                                    'oppose',
+                                    'consent',
+                                    'items_yq',
+                                    'fdb_ls',
+                                    'zrwy',
+                                    'pshjy',
+                                    'bjyj',
+                                    'fxkzyq'
+                                ]);
+            //获取文件
+             $file = $request->business_license;
+            //设置操作数据库
+            $table = new Fxscsp();
+             //获取项目id
+            $data['items_id'] = $iid;
+            //获取操作状态
+            $status = $request->table_status;
+            //第一个阶段
+            $pid = 4;
+            //调用更新方法
+            $status = $this->phase_update($table,$data,$pid,$status,$file);
             //判断是否执行成功
             if($status){
 
@@ -269,21 +332,55 @@ class ItemsPhasesController extends Controller
     }
 
     //处理更新表单数据方法
-    public function phase_update($table,$data,$pid,$status)
+    public function phase_update($table,$data,$pid,$status,$file)
     {   
         //$table 操作的数据库 $data 白名单字段 $iid 项目id $pid阶段id $status 操作状态
-
+        $uploader = new FileUploadHandler();
         //判断当前状态
         if($status == 2)
         {   
+            //判断是否有文件数据
+            if($file){
+               //遍历文件
+                foreach($file as $fv){
+
+                    //储存到指定位置
+                    $url = $uploader->save($fv,$data['items_id']);
+                    //获取返回地址
+                    $accesory = PhaseAcessory::insert([
+                                                        'items_id'  => $data['items_id'],
+                                                        'phases_id' => $pid,
+                                                        'file_name' => $url['file_name'],
+                                                        'site_url'  =>  $url['path'],
+                                                        'created_at' => date('Y-m-d H:i:s')
+                                                        ]);
+                } 
+            }
             //更新数据
-            $status = $table::where('items_id',$data['items_id'])->update($data);
+             $table::where('items_id',$data['items_id'])->update($data);
 
             //执行成功后返回真假数据
-            return $status;
+            return true;
 
         }else if($status == 1)
         {
+            //判断是否有文件数据
+            if($file){
+               //遍历文件
+                foreach($file as $fv){
+
+                    //储存到指定位置
+                    $url = $uploader->save($fv,$data['items_id']);
+                    //获取返回地址
+                    $accesory = PhaseAcessory::insert([
+                                                        'items_id'  => $data['items_id'],
+                                                        'phases_id' => $pid,
+                                                        'file_name' => $url['file_name'],
+                                                        'site_url'  =>  $url['path'],
+                                                        'created_at' => date('Y-m-d H:i:s')
+                                                        ]);
+                } 
+            }
             //状态改为1
             $data['table_status'] = $status;
             //数据更新入库
@@ -296,7 +393,7 @@ class ItemsPhasesController extends Controller
                                                     ['phases_id','=',$pid]
                                                 ])->update(['phases_status'=>'完成']);
 
-                return $status;                 
+                return true;                 
             } 
         }
 

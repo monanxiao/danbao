@@ -1,0 +1,84 @@
+/*
+* @Author: Gao Yongjian
+* @Date:   2018-09-26 16:00:39
+* @Last Modified by:   Mo Nanxiao
+* @Last Modified time: 2018-09-26 16:15:07
+*/
+*{
+	margin: 0;
+	padding:0;
+}
+li{
+ 	list-style: none;
+}
+.boss{
+	 position:relative;
+	 width: 350px;
+	 margin:0px auto;
+}
+.bigimg{
+	 width: 350px;
+	 border: 1px solid #ccc;
+	 height: 350px;
+	 position: relative;
+}
+#mask{
+	width: 150px;
+	height: 150px;
+	background: rgba(255,255,255,0.5);
+	position: absolute;
+	top: 0;
+	left: 0;
+	border:1px solid #ccc;
+	cursor: pointer;
+}
+ 
+.xia{
+	 clear:both;
+	 margin-top:5px;
+	 width:352px;
+}
+.xia .prev{
+	 float:left;
+	 margin-right:4px;
+}
+.xia .next{
+ 	float:right;
+}
+.xia .prev,.xia .next{
+	 display:block;
+	 text-align:center;
+	 width:10px;
+	 height:54px; 
+	 line-height:54px;
+	 border:1px solid #CCC;
+	 background:#EBEBEB;
+	 cursor:pointer;
+	 text-decoration:none;
+}
+.xia .items{
+	 float:left;
+	 position:relative;
+	 width:322px;
+	 height:56px;
+	 overflow:hidden;
+}
+.xia .items ul{
+	 position:absolute;
+	 height:56px;
+}
+.xia .items ul li{
+	 float:left;
+	 width:64px;
+	 text-align:center;
+}
+ .xia .items ul li img{
+	 border:1px solid #CCC;
+	 padding:2px;
+	 width:50px;
+	 height:50px;
+}
+.xia .items ul li img:hover{
+	 border:2px solid #FF6600;
+	 padding:1px;
+} 
