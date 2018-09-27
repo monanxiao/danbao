@@ -2,7 +2,7 @@
 * @Author: Gao Yongjian
 * @Date:   2018-09-26 16:00:39
 * @Last Modified by:   Mo Nanxiao
-* @Last Modified time: 2018-09-26 16:15:07
+* @Last Modified time: 2018-09-27 09:11:18
 */
 *{
 	margin: 0;
@@ -13,7 +13,7 @@ li{
 }
 .boss{
 	 position:relative;
-	 width: 350px;
+	 width: 100%;
 	 margin:0px auto;
 }
 .bigimg{
@@ -21,6 +21,7 @@ li{
 	 border: 1px solid #ccc;
 	 height: 350px;
 	 position: relative;
+	 margin:0px auto;
 }
 #mask{
 	width: 150px;
@@ -36,7 +37,8 @@ li{
 .xia{
 	 clear:both;
 	 margin-top:5px;
-	 width:352px;
+	 width:660px;
+	 margin:0px auto;
 }
 .xia .prev{
 	 float:left;
@@ -60,7 +62,7 @@ li{
 	 float:left;
 	 position:relative;
 	 width:322px;
-	 height:56px;
+	 height:95px;
 	 overflow:hidden;
 }
 .xia .items ul{

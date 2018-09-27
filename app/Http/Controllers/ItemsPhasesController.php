@@ -11,6 +11,7 @@ use App\Models\Fxscsp;
 use App\Models\Xmbgjsp;
 use App\Models\ItemsPhase;
 use App\Models\PhaseAcessory;
+use App\Models\MbWord;
 
 use App\Handlers\CreateWord;
 use App\Handlers\FileUploadHandler;
@@ -40,7 +41,6 @@ class ItemsPhasesController extends Controller
     //录入项目阶段表单
     public function create_tables($iid,Request $request,CreateItemsTable $phasecreate)
     {   
-        
         //初始资料阶段
         if($request->btn_type == 'cscl')
         {   
@@ -66,12 +66,11 @@ class ItemsPhasesController extends Controller
             $num = 1;
             
             //调用入库方法
-            $status = $this->phase_create($data,$iid,$status,$table,$num,$file);
+            $status = $this->phase_create($data,$iid,$status,$table,$num,$file,$request);
             //是否调用成功
             if($status){
 
                 return back();
-                // dd($status);
 
             }else{
 
@@ -214,7 +213,7 @@ class ItemsPhasesController extends Controller
 
         //初审材料
         if($request->btn_type == 'cscl')
-        {
+        {   
             //数据库 初审材料
             $table = new CreateItemsTable();
 
@@ -237,8 +236,10 @@ class ItemsPhasesController extends Controller
             $status = $request->table_status;
             //第一个阶段
             $pid = 1;
+            // dd($data);exit;
             //调用更新方法
-            $status = $this->phase_update($table,$data,$pid,$status,$file);
+            $status = $this->phase_update($table,$data,$pid,$status,$file,$request,$iid);
+
             //判断是否执行成功
             if($status){
 
@@ -332,10 +333,14 @@ class ItemsPhasesController extends Controller
     }
 
     //处理更新表单数据方法
-    public function phase_update($table,$data,$pid,$status,$file)
+    public function phase_update($table,$data,$pid,$status,$file,$request,$iid)
     {   
-        //$table 操作的数据库 $data 白名单字段 $iid 项目id $pid阶段id $status 操作状态
+        //$table 操作的数据库 $data 白名单字段 $iid 项目id $pid阶段id $status 操作状态 $request 数据集合
         $uploader = new FileUploadHandler();
+
+        //实例化文件上传类
+        $createword = new CreateWord();
+
         //判断当前状态
         if($status == 2)
         {   
@@ -356,9 +361,11 @@ class ItemsPhasesController extends Controller
                                                         ]);
                 } 
             }
+            //调用模板创建模板方法   
+             $createword->create($request,$pid,$iid);
             //更新数据
-             $table::where('items_id',$data['items_id'])->update($data);
-
+             $table::where('items_id',$iid)->update($data);
+             
             //执行成功后返回真假数据
             return true;
 
@@ -383,8 +390,10 @@ class ItemsPhasesController extends Controller
             }
             //状态改为1
             $data['table_status'] = $status;
+             //调用模板创建模板方法   
+             $createword->create($request,$pid,$iid);
             //数据更新入库
-            $stu = $table::where('items_id',$data['items_id'])->update($data);
+            $stu = $table::where('items_id',$iid)->update($data);
             //判断是否更新成功
             if($stu){
                 //修改阶段状态
@@ -400,18 +409,21 @@ class ItemsPhasesController extends Controller
     }
 
     //处理录入阶段表单数据方法
-    public function phase_create($data,$iid,$status,$table,$num,$file)
+    public function phase_create($data,$iid,$status,$table,$num,$file,$request)
     {
 
-        //data 录入的字段白名单 iid项目id status 提交的状态 table数据表 num 第几阶段
+        //data 录入的字段白名单数据 iid项目id status 提交的状态 table数据表 num 第几阶段
         $uploader = new FileUploadHandler();
-        
+        // 实例化模板储存表
+        $mb_word =  new MbWord();
+        //实例化文件上传类
+        $createword = new CreateWord();
+
         //项目id
         $data['items_id'] = $iid;
         //入库时间
         $data['created_at'] = date('Y-m-d H:i:s');
-
-
+        
         //判断提交的状态
         //状态等于2的时候
         if($status == 2)
@@ -443,16 +455,34 @@ class ItemsPhasesController extends Controller
             //假如录入成功，则修改阶段的状态
             if($table)
             {
+                //调用模板创建模板方法
+                 $array = $createword->create($request,$num,$iid);
+                 // return $array;exit;
+                //储存文件地址
+                 foreach($array as $k => $v){
+                    //遍历数据入库
+                    $mb_word->insert([
+                                        'mb_name'   =>  $k,
+                                        'items_id'  =>  $iid,
+                                        'phase_id'  =>  $num,
+                                        'site_url'  =>  $v,
+                                        'created_at'=>  date('Y-m-d H:i:s')
+                                    ]);
+                 }
+
                 //录入阶段状态
                 ItemsPhaseCreate::where('items_id', '=', $iid)
                                     ->where('phases_id','=',$num)
                                     ->update(['phases_status'=>'进行中']);
+
                 return 'true';
+                
             }
 
             //或者等于1的时候 完成阶段录入
         }   elseif($status == 1)
-            {
+            { 
+            
                 //判断是否有文件数据
                 if($file){
                    //遍历文件
@@ -477,11 +507,28 @@ class ItemsPhasesController extends Controller
                 $table = $table::insertGetId($data);
                 //修改阶段状态
                 if($table)
-                {
-                        ItemsPhaseCreate::where('items_id', '=', $iid)
+                {                   
+
+                    //调用模板创建模板方法
+                     $array = $createword->create($request,$num,$iid);
+
+                    //储存文件地址
+                     foreach($array as $k => $v){
+                        //遍历数据入库
+                        $mb_word->insert([
+                                            'mb_name'   =>  $k,
+                                            'items_id'  =>  $iid,
+                                            'phase_id'  =>  $num,
+                                            'site_url'  =>  $v,
+                                            'created_at'=>  date('Y-m-d H:i:s')
+                                        ]);
+                     }
+
+                    //修改阶段状态
+                    ItemsPhaseCreate::where('items_id', '=', $iid)
                                             ->where('phases_id','=',$num)
                                             ->update(['phases_status'=>'完成']);
-                    return 'true';                          
+                    return 'true';                                                  
                 }
             }else{
 

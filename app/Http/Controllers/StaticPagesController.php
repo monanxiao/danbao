@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\Natural;
 use App\Models\Item;
-
+use App\Handlers\CreateWord;
 class StaticPagesController extends Controller
 {
     //客户列表
@@ -42,7 +42,15 @@ class StaticPagesController extends Controller
     }
     //预览word
     public function word(){
-        
+
+        $createword = new CreateWord();
+        $request = 1;
+        $num = 1;
+        $iid =6;
+       //调用模板创建模板方法
+                 $array = $createword->create($request,$num,$iid);
+
+                 dd($array);exit;
         return view('staticpages.word');
     }
 

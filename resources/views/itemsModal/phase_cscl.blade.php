@@ -21,6 +21,11 @@
    {{ csrf_field() }}
    <input type="hidden" name='btn_type' value='cscl'>
    <input type="hidden" id='table_status' name='table_status' value=''>
+   <input type="hidden" name='company_name' value='{{ $company->company_name }}'>
+   <input type="hidden"  name='legal_person' value='{{ $company->legal_person }}'>
+   <input type="hidden" name='registered_capital' value="{{ $company->registered_capital }}">
+   <input type="hidden" name='registered_address'  value='{{ $company->state_operation }}'>
+   <input type="hidden" name='state_operation' value='{{ $company->state_operation }}'>
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="lxspb">
         <div class="form-group">
@@ -226,9 +231,17 @@
     </form>
   @elseif($phasetable['table_status']  == 2)
   {{-- 面板区域 --}} 
-<form action="{{ URL('items/phase/edit',$phasetable['id']) }}" method='POST' enctype="multipart/form-data">
+<form action="{{ URL('items/phase/edit',$phasetable['items_id']) }}" method='POST' enctype="multipart/form-data">
    {{ csrf_field() }}
-   <input type="hidden" name='btn_type' value='cscl'>
+
+  <input type="hidden" name='btn_type' value='cscl'>
+  <input type="hidden" id='table_status' name='table_status' value=''>
+  <input type="hidden" name='company_name' value='{{ $company->company_name }}'>
+  <input type="hidden"  name='legal_person' value='{{ $company->legal_person }}'>
+  <input type="hidden" name='registered_capital' value="{{ $company->registered_capital }}">
+  <input type="hidden" name='registered_address'  value='{{ $company->state_operation }}'>
+  <input type="hidden" name='state_operation' value='{{ $company->state_operation }}'>
+
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="lxspb">
         <div class="form-group">
@@ -236,27 +249,24 @@
               <table class="table table-striped table-bordered table-hover">
                 <tr>
                   <td>
-                    <fieldset disabled>
                       <div class="form-group">
                           <label class="sr-only" for="exampleInputAmount">客户名称</label>
                           <div class="input-group">
                               <div class="input-group-addon"><i class="fa fa-building" aria-hidden="true">客户</i></div>
-                              <input type="text" name='company_name' class="form-control" id="exampleInputAmount" value='{{ $company->company_name }}'maxlength="20">
-                        
+                              <input type="text" readonly name='company_name' class="form-control" id="exampleInputAmount" value='{{ $company->company_name }}'maxlength="20">
                           </div>
                       </div>
-                    </fieldset>
                   </td>
                   <td style='width:160px;'>
-                    <fieldset disabled>
+                 
                       <div class="form-group">
                           <label class="sr-only" for="exampleInputAmount">法人</label>
                           <div class="input-group">
                               <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true">&nbsp;&nbsp;法人</i></div>
-                              <input type="text" name='legal_person' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength="5" >
+                              <input type="text" readonly name='legal_person' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength="5" >
                           </div>
                       </div>
-                    </fieldset>
+                   
                   </td>
                   <td style='width:250px;'>
                     <fieldset disabled>
@@ -377,7 +387,6 @@
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-jpy" aria-hidden="true">&nbsp;&nbsp;贷款金额</i></div>
                                   <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money'] }}' maxlength='3'>
-                                  <input type="hidden" id='table_status' name='table_status' value=''>
                               </div>
                           </div>
                         </td>
@@ -391,21 +400,106 @@
                         </div>
                         </td>
                       </tr>
-                <tr>
-                  <th colspan="5" style='text-align: center'>已上传附件列表</th>
-                </tr>
-               
-                  @foreach($url as $uv)
-                   @if($uv->phases_id == 1)
-                  <tr>
-                    <td colspan="5">
-                      <span style='margin-left:20px;'><a target="_blank"  href="{{ $uv->site_url }}">{{ $uv->file_name }}</a></span>
-                      <span style='float:right;margin-right: 20px;'><a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}">下载</a></span>
-                      <span style='float:right;margin-right: 20px;'><a target="_blank" onClick="doword('{{ URL('') . $uv->site_url }}')">预览</a></span>
-                    </td>
-                  </tr> 
-                    @endif
-                    @endforeach
+                                      <tr>
+                          <th colspan="5" style='text-align: center'>已上传附件列表</th>
+                        </tr>
+                        <tr>
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="bigimg">
+                                <img src="" height="350" width="350" id="spic"> 
+                              </div>
+                              <div class="xia"> <a class="prev"><</a> <a class="next">></a>
+                                <div class="items">
+                                  <ul>
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 1)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+                                          <li>
+                                            <a target="_blank"  href="{{ $uv->site_url }}">
+                                              <img src="{{ $uv->site_url }}" id='imgsrc' height="56" width="56">
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span>
+                                            <br> 
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                              <script>
+                                var src = document.getElementById('imgsrc').src;
+                                document.getElementById("spic").src=src;
+                              </script>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;'>
+                                  <ul>
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 1)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+                                          <li style='width:150px;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-4x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span><br> 
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th colspan="5" style='text-align: center'>可打印模板</th>
+                        </tr>
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;'>
+                                  <ul>
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 1)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+                                          <li style='width:150px;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-4x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span><br> 
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
+
                 <tr>
                   <th colspan="5" style='text-align: center'><h3>附件上传</h3></th>
                 </tr>
@@ -434,9 +528,8 @@
                     <button type="submit" class="btn btn-primary" onclick="save(this)">
                     更新
                     </button>
-                     <input type="hidden" id='table_status' name='table_status' value=''>
                     <span style='color:red;font-size:14px;'>(更新数据可修改)</span> 
-                    <button type="submit" class="btn btn-success" onclick="ok(this)">
+                   <button type="submit" class="btn btn-success" onclick="ok(this)">
                     完成
                     </button>
                     <span style='color:red;font-size:14px;'>(进入下一阶段)</span>
@@ -640,19 +733,102 @@
                        <tr>
                           <th colspan="5" style='text-align: center'>已上传附件列表</th>
                         </tr>
-                       
-                          @foreach($url as $uv)
-                           @if($uv->phases_id == 1)
-                          <tr>
-                            <td colspan="5">
-                              <span style='margin-left:20px;'><a target="_blank"  href="{{ $uv->site_url }}">{{ $uv->file_name }}</a></span>
-                              <span style='float:right;margin-right: 20px;'><a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}">下载</a></span>
-                              <span style='float:right;margin-right: 20px;'><a target="_blank"  href="{{ $uv->site_url }}">预览</a></span>
-                            </td>
-                          </tr> 
-                            @endif
-                            @endforeach
                         <tr>
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="bigimg">
+                                <img src="" height="350" width="350" id="spic"> 
+                              </div>
+                              <div class="xia"> <a class="prev"><</a> <a class="next">></a>
+                                <div class="items">
+                                  <ul>
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 1)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+                                          <li>
+                                            <a target="_blank"  href="{{ $uv->site_url }}">
+                                              <img src="{{ $uv->site_url }}" id='imgsrc' height="56" width="56">
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span>
+                                            <br> 
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                              <script>
+                                var src = document.getElementById('imgsrc').src;
+                                document.getElementById("spic").src=src;
+                              </script>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;'>
+                                  <ul>
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 1)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+                                          <li style='width:150px;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-4x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span><br> 
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th colspan="5" style='text-align: center'>可打印模板</th>
+                        </tr>
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;'>
+                                  <ul>
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 1)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+                                          <li style='width:150px;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-4x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span><br> 
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
                     </table>
                   </div>
                   <div class="modal-footer">

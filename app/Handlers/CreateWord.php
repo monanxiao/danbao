@@ -5,17 +5,17 @@
  * @Date:   2018-09-19 17:07:22
  * @email:   monanxiao@qq.com
  * @Last Modified by:   Mo Nanxiao
- * @Last Modified time: 2018-09-21 11:33:06
+ * @Last Modified time: 2018-09-27 15:31:35
  */
 namespace App\Handlers;
 
 class CreateWord{
 
 	//模板测试
-	public function create($data,$type,$iid){
+	public function create($data,$num,$iid){
 
-		//$data数据集合 $iid项目id $type word文件
-		// return $type;exit;
+		//$data数据集合 $iid项目id $num 阶段
+		// return $num;exit;
 		//引入word扩展
 		$PHPWord = new \PhpOffice\PhpWord\PHPWord();
 		//公共目录
@@ -36,63 +36,67 @@ class CreateWord{
 			}
 
 		//判断传入文件
-		if ($type == 'cscl'){
-
+		if ($num == '1'){
+			// return $data;exit;
 			//读取委托担保申请书模板
-			$document = $PHPWord->loadTemplate($path . '/mb_word/' .'委托担保申请书.docx');
+			$document = $PHPWord->loadTemplate($path . '/mb_word/' .'委托担保申请书.docx'); 
 			//生成的文件名称
-			$url = $res . '委托担保申请书.docx';
-  
-		}elseif ($type == 'lxspb'){
-
-				//读取担保意向函模板
-				$document = $PHPWord->loadTemplate($path . '/' .'立项审批表.docx');
-				//生成的文件名称
-				$url =  $res . '立项审批表.docx';
-
-		}elseif ($type == 'dbyxh'){
-
+			$wtdb = $res . '委托担保申请书.docx';
+			// 执行保存文件
+			 $this->word_va($document,$wtdb,$data);
+			//读取担立项审批表
+			$document = $PHPWord->loadTemplate($path . '/mb_word/' .'立项审批表.docx');
+			//生成的文件名称
+			$lxsp =  $res . '立项审批表.docx';
+			// 执行保存文件
+			$this->word_va($document,$lxsp,$data);
 			//读取担保意向函模板
-			$document = $PHPWord->loadTemplate($path . '/' .'担保意向函.docx');
+			$document = $PHPWord->loadTemplate($path . '/mb_word/' .'担保意向函.docx'); 
 			//生成的文件名称
-			$url =  $res . '担保意向函.docx';
+			$dbyx =  $res . '担保意向函.docx';
+			// 执行保存文件
+			$this->word_va($document,$dbyx,$data);
+			//地址集合
+			$url = ['委托担保申请书' => $wtdb,'立项审批表' => $lxsp,'担保意向函' => $dbyx];
 
-		}elseif ($type == 'rzdbywspb'){
+			$dataword = [$wtdb,$lxsp,$dbyx];
+
+		}elseif ($num == '2'){
 
 				//读取担保意向函模板
 				$document = $PHPWord->loadTemplate($path . '/' .'融资担保业务审批表.docx');
 				//生成的文件名称
 				$url =  $res . '融资担保业务审批表.docx';
 
-		}elseif ($type == 'dbh'){
+		}elseif ($num == '3'){
 
 				//读取担保意向函模板
 				$document = $PHPWord->loadTemplate($path . '/' .'担保函.docx');
 				//生成的文件名称
 				$url =  $res . '担保函.docx';
 
-		}elseif ($type == 'rzdbywspb'){
+		}elseif ($num == '4'){
 
 				//读取担保意向函模板
 				$document = $PHPWord->loadTemplate($path . '/' .'项目变更审批表.docx');
 				//生成的文件名称
 				$url =  $res . '项目变更审批表.docx';
 
-		}elseif ($type == 'ywhtscspb'){
+		}elseif ($num == '5'){
 
 				//读取担保意向函模板
 				$document = $PHPWord->loadTemplate($path . '/' .  '业务合同审查审批表.docx');
 				//生成的文件名称
 				$url =  $res . '业务合同审查审批表.docx';
 
-		}elseif ($type == 'fkspb'){
+		}elseif ($num == 'fkspb'){
 
 				//读取担保意向函模板
 				$document = $PHPWord->loadTemplate($path . '/' .  '放款审批表.docx');
 				//生成的文件名称
 				$url =  $res . '放款审批表.docx';
 
-		}elseif ($type == 'fktzs'){
+		}elseif ($num == 'fktzs'){
 
 				//读取担保意向函模板
 				$document = $PHPWord->loadTemplate($path . '/' .  '放款通知书.docx');
@@ -103,44 +107,50 @@ class CreateWord{
 			$document = $PHPWord->loadTemplate($path . '/' .'评审会表决表.docx');
 
 		}
-        
-		//公共变量区域
-
-		// ------------------------------开始--------------------------------------
-		//贷款人
-		$document ->setValue('borrower', $data['borrower']);
-		//贷款金额
-		$document ->setValue('loans_money', $data['loans_money']);
-		//大写金额，调用num_to_rmb方法转为大写人民币
-		$document ->setValue('A_loans_money', $this->num_to_rmb($data['loans_money']));
-		//贷款期限
-		$document ->setValue('deadline', $data['deadline']);
-		//贷款用途
-		$document ->setValue('loans_use', $data['loans_use']);
-		//法人
-		$document ->setValue('legal_person', '法人');
-		//生成时间
-		$document ->setValue('time', '时间');
-		// --------------------------------结束-------------------------------------
-		//完整文件路径
-		$file = $path . '\\' . $url;  
-
-		//检查文件是否存在，存在返回false 不存在则保存文件
-
-		if(file_exists($file))
-		{
-			return $url;
-
-		}else{
-			// 执行保存文件
-			$document->SaveAs($url);
-			
+		
 			//返回路径
 			return $url;
-		}
+	}
 
+		//公共变量区域
+
+	// ------------------------------开始--------------------------------------
+	public function word_va($document,$savaname,$data){
+
+		//担保费率
+		$document ->setValue('rate', $data->rate);
+		//反担保措施
+		$document ->setValue('measure', $data->measure);
+		//注册资本
+		$document ->setValue('registered_capital', $data->registered_capital);
+		//经营情况
+		$document ->setValue('state_operation', $data->state_operation);
+		//经营地址
+		$document ->setValue('business_address', $data->business_address);
+		//客户名称
+		$document ->setValue('clientname', $data->company_name);
+		//贷款人
+		$document ->setValue('borrower', $data->borrower);
+		//贷款金额
+		$document ->setValue('loans_money', $data->loans_money);
+		//大写金额，调用num_to_rmb方法转为大写人民币
+		$document ->setValue('A_loans_money', $this->num_to_rmb($data->loans_money));
+		//贷款期限
+		$document ->setValue('deadline', $data->deadline);
+		//贷款用途
+		$document ->setValue('loans_use', $data->loans_use);
+		//法人
+		$document ->setValue('legal_person',$data->legal_person);
+		//生成时间
+		$document ->setValue('time', date('Y-m-d'));
+		//储存数据
+		$document->SaveAs($savaname);
 
 	}
+	
+	// --------------------------------结束-------------------------------------
+
+
 
 
 	//数字转换为大写
