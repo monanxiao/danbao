@@ -58,29 +58,30 @@ li{
 	 cursor:pointer;
 	 text-decoration:none;
 }
-.xia .items{
+.xia .items,.xia .items1,.xia .items2,.xia .items3,.xia .items4,.xia .items5,.xia .items6,.xia .items7{
 	 float:left;
 	 position:relative;
 	 width:322px;
 	 height:95px;
 	 overflow:hidden;
 }
-.xia .items ul{
+.xia .items ul,.xia .items1 ul,.xia .items2 ul,.xia .items3 ul,.xia .items4 ul,.xia .items5 ul,.xia .items6 ul,.xia .items7 ul{
 	 position:absolute;
 	 height:56px;
 }
-.xia .items ul li{
+.xia .items ul li,.xia .items1 ul li,.xia .items2 ul li,.xia .items3 ul li,.xia .items4 ul li,.xia .items5 ul li,.xia .items6 ul li,.xia .items7 ul li{
 	 float:left;
 	 width:64px;
 	 text-align:center;
+	 overflow:hidden;
 }
- .xia .items ul li img{
+ .xia .items ul li img,.xia .items1 ul li img,.xia .items2 ul li img,.xia .items3 ul li img,.xia .items4 ul li img,.xia .items5 ul li img,.xia .items6 ul li img,.xia .items7 ul li img{
 	 border:1px solid #CCC;
 	 padding:2px;
 	 width:50px;
 	 height:50px;
 }
-.xia .items ul li img:hover{
+.xia .items ul li img:hover,.xia .items1 ul li img:hover,.xia .items2 ul li img:hover,.xia .items3 ul li img:hover,.xia .items4 ul li img:hover,.xia .items5 ul li img:hover,.xia .items6 ul li img:hover,.xia .items7 ul li img:hover{
 	 border:2px solid #FF6600;
 	 padding:1px;
 } 

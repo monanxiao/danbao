@@ -13,47 +13,39 @@
                 <div class="modal-body">           
                     <table class="table table-striped table-bordered table-hover">
                       <tr>
-                        <td>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">贷款人</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;贷款人</i></div>
-                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
+                          <th colspan="5" style='text-align: center'>可打印模板</th>
+                        </tr>
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;width:95%;'>
+                                  <ul style="height:68px;top:50%;margin-top:-34px; ">
+                                    @foreach($mb_words as $uv)
+                                      @if($uv->phase_id == 5)
+                                        @if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
+                                          <li style='width:150px;float:left;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->mb_name }}</span>
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
                               </div>
-                          </div>
-                        </td>    
-                        <td>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">借款金额</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;借款金额</i></div>
-                                  <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money'] }}' maxlength='3'>
-                                 
-                              </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div class="form-group">
-                              <label class="sr-only" for="exampleInputAmount">时间</label>
-                              <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;时间</i></div>
-                                  <input type="text" name="alertDateQuery" id="aDate">
-                        <script type="text/javascript">
-                            var mydateInput = document.getElementById("aDate");
-                            var date = new Date();
-                            var dateString = date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + '日';
-                            mydateInput.value = "   " + dateString;
-                        </script>
-                              </div>
-                          </div>
-                        </td>
-                      </tr>
+                          </td>
+                        </tr>
                     </table>
                   <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">
-                      立即打印
-                    </button>
-                    <span style='color:red;font-size:14px;'>(打印担保函)</span>
                     <button type="submit" class="btn btn-primary">
                       完成
                     </button>

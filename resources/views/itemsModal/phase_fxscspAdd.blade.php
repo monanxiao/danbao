@@ -22,6 +22,9 @@
    {{ csrf_field() }}
    <input type="hidden" name='btn_type' value='fxhbjb'>
    <input type="hidden" id='table_status' name='table_status' value=''>
+   @include('itemsModal.publicTables')
+   {{-- 担保费 --}}
+  <input type="hidden" name='money_sum' value='{{ $phasetable['loans_money']*$phasetable['rate']/100 }}' >
   <div class="tab-content">
 	<!-- 风控会表决表开始 -->
 		<div role="tabpanel" class="tab-pane active" id="fkhbjb">
@@ -35,7 +38,7 @@
                               <label class="sr-only" for="exampleInputAmount">贷款机构</label>
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;贷款机构</i></div>
-                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
+                                  <input type="text" name='legal_person' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
                               </div>
                           </div>
                         </fieldset>
@@ -57,7 +60,7 @@
                               <label class="sr-only" for="exampleInputAmount">担保费</label>
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true">&nbsp;&nbsp;担保费</i></div>
-                                  <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money']*$phasetable['rate']/100 }}' maxlength='50'>
+                                  <input type="text" name='money_sum' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money']*$phasetable['rate']/100 }}' maxlength='50'>
                               </div>
                           </div>
                         </fieldset>
@@ -277,26 +280,21 @@
                           </div>
                         </td>
                     </tr>
-                    <tr>
-                      <th colspan="5" style='text-align: center'><h3>附件上传</h3></th>
-                    </tr>
-                    <tr>
-                      <td colspan="5">
-                        <div class="file-loading">
-                            <input id="file-1" name='business_license[]'multiple="multiple" type="file" class="file" data-upload-url="#">
-                        </div>
-                      </td>
-                    </tr>
+			    <tr>
+					<th colspan="5" style='text-align: center'>
+					  <h3>附件上传</h3>
+					  <span style='color:red;font-size:12px;'>一次只能上传一个格式</span>
+					</th>
+                </tr>
+                <tr>
+                  <td colspan="5">
+                    <div class="file-loading">
+                        <input id="file-1" name='business_license[]'  multiple="multiple" type="file" class="file" data-upload-url="#">
+                    </div>
+                  </td>
+                </tr>
             </table>
             <div class="modal-footer">
-                   {{--  <button type="submit" class="btn btn-primary">
-                      立即打印
-                    </button>
-                    <span style='color:red;font-size:14px;'>(打印风控会表决表)</span>
-                     <button type="submit" class="btn btn-primary">
-                      立即打印
-                    </button>
-                    <span style='color:red;font-size:14px;'>(打印担保函)</span> --}}
                     <a href="#fkhbjb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="last(this)" data-toggle="tab">
                         上一步
                     </a>
@@ -329,6 +327,9 @@
    {{ csrf_field() }}
    <input type="hidden" name='btn_type' value='fxhbjb'>
    <input type="hidden" id='table_status' name='table_status' value=''>
+      {{-- 担保费 --}}
+  <input type="hidden" name='money_sum' value='{{ $phasetable['loans_money']*$phasetable['rate']/100 }}' >
+   @include('itemsModal.publicTables')
   <div class="tab-content">
   <!-- 风控会表决表开始 -->
     <div role="tabpanel" class="tab-pane active" id="fkhbjb">
@@ -584,40 +585,135 @@
                           </div>
                         </td>
                     </tr>
-                    <tr>
-                      <th colspan="5" style='text-align: center'><h3>已上传附件</h3></th>
-                    </tr>
-                     @foreach($url as $uv)
-                     @if($uv->phases_id == 4)
-                    <tr>
-                      <td colspan="5">
-                        <span style='margin-left:20px;'><a target="_blank"  href="{{ $uv->site_url }}">{{ $uv->file_name }}</a></span>
-                        <span style='float:right;margin-right: 20px;'><a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}">下载</a></span>
-                        <span style='float:right;margin-right: 20px;'><a target="_blank"  href="{{ $uv->site_url }}">预览</a></span>
-                      </td>
-                    </tr>
-                    @endif
-                    @endforeach
-                    <tr>
-                      <th colspan="5" style='text-align: center'><h3>附件上传</h3></th>
-                    </tr>
-                    <tr>
-                      <td colspan="5">
-                        <div class="file-loading">
-                            <input id="file-1" name='business_license[]'multiple="multiple" type="file" class="file" data-upload-url="#">
-                        </div>
-                      </td>
-                    </tr>
+					 <?php $a = 0;$b=0; ?>
+					@foreach($url as $uv)
+					  @if($uv->phases_id == 4)
+						@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+					 <?php $a = 1; ?>
+						@elseif(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+					 <?php $b = 1; ?>
+						@endif
+					  @endif
+					@endforeach
+					@if($a==1||$b==1)
+                       <tr>
+                          <th colspan="5" style='text-align: center'>已上传附件列表</th>
+                        </tr>
+						@if($a==1)
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="bigimg">
+                                <img src="" height="350" width="350" id="spic3"> 
+                              </div>
+                              <div class="xia"> <a class="prev"><</a> <a class="next">></a>
+                                <div class="items3">
+                                  <ul >
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 4)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+                                          <li>
+                                            <a target="_blank"  href="{{ $uv->site_url }}">
+                                              <img src="{{ $uv->site_url }}" id='imgsrc3' height="56" width="56">
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span>
+                                            <br> 
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                              <script>
+                                var src = document.getElementById('imgsrc3').src;
+                                document.getElementById("spic3").src=src;
+                              </script>
+                          </td>
+                        </tr>
+						@endif
+						@if($b==1)
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;width:95%; '>
+                                  <ul style="height:68px;top:50%;margin-top:-34px;">
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 4)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+                                          <li style='width:150px;float:left;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span>
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
+						@endif
+						@endif
+                        <tr>
+                          <th colspan="5" style='text-align: center'>可打印模板</th>
+                        </tr>
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;width:95%;'>
+                                  <ul style="height:68px;top:50%;margin-top:-34px;" >
+                                    @foreach($mb_words as $uv)
+                                      @if($uv->phases_id == 4)
+                                        @if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
+                                          <li style='width:150px;float:left;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->mb_name }}</span>
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
+                      <tr>
+                        <th colspan="5" style='text-align: center'>
+                          <h3>附件上传</h3>
+                          <span style='color:red;font-size:12px;'>一次只能上传一个格式</span>
+                        </th>
+                      </tr>
+                      <tr>
+                        <td colspan="5">
+                          <div class="file-loading">
+                              <input id="file-1" name='business_license[]' multiple="multiple"  type="file" class="file" data-upload-url="#">
+                          </div>
+                        </td>
+                      </tr>
             </table>
             <div class="modal-footer">
-                   {{--  <button type="submit" class="btn btn-primary">
-                      立即打印
-                    </button>
-                    <span style='color:red;font-size:14px;'>(打印风控会表决表)</span>
-                     <button type="submit" class="btn btn-primary">
-                      立即打印
-                    </button>
-                    <span style='color:red;font-size:14px;'>(打印担保函)</span> --}}
                     <a href="#fkhbjb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="last(this)" data-toggle="tab">
                         上一步
                     </a>
@@ -645,10 +741,11 @@
 </form>
   @elseif($fxscsp_data['table_status']  == 1)
     <!-- 面板区开始 -->
-<form action="{{ URL('items/phase/edit',$fxscsp_data['id']) }}" method='POST' enctype="multipart/form-data">
+<form action="" method='POST' enctype="multipart/form-data">
    {{ csrf_field() }}
-   <input type="hidden" name='btn_type' value='fxhbjb'>
-   <input type="hidden" id='table_status' name='table_status' value=''>
+   @include('itemsModal.publicTables')
+  {{-- 提交的阶段 --}}
+  <input type="hidden" id='table_status' name='btn_type' value=' ' />
   <div class="tab-content">
   <!-- 风控会表决表开始 -->
     <div role="tabpanel" class="tab-pane active" id="fkhbjb">
@@ -825,16 +922,15 @@
                         </fieldset>
                         </td>
                     </tr>
-
             </table>
                     <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">
-                          取消
-                          </button> 
-                          <a href="#fkhjyb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="next(this)" data-toggle="tab">
-                          下一步
-                          </a>                        
-                        </div>
+					  <button type="button" class="btn btn-default" data-dismiss="modal">
+					  取消
+					  </button> 
+					  <a href="#fkhjyb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="next(this)" data-toggle="tab">
+					  下一步
+					  </a>                        
+					</div>
           </div>
           <hr>
       </div>
@@ -932,62 +1028,132 @@
                         </fieldset>
                         </td>
                     </tr>
-                    <tr>
-                      <th colspan="5" style='text-align: center'><h3>已上传附件</h3></th>
-                    </tr>
-                     @foreach($url as $uv)
-                     @if($uv->phases_id == 4)
-                    <tr>
-                      <td colspan="5">
-                        <span style='margin-left:20px;'><a target="_blank"  href="{{ $uv->site_url }}">{{ $uv->file_name }}</a></span>
-                        <span style='float:right;margin-right: 20px;'><a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}">下载</a></span>
-                        <span style='float:right;margin-right: 20px;'><a target="_blank"  href="{{ $uv->site_url }}">预览</a></span>
-                      </td>
-                    </tr>
-                    @endif
-                    @endforeach
-                    <tr>
-                      <td colspan="5">
-                        <div class="boss">
-                       <div class="bigimg">
-                        <img src="" height="350" width="350" id="spic"> 
-                       </div>
-                       <div class="xia"> <a class="prev"><</a> <a class="next">></a>
-                        <div class="items">
-                        <ul>
-                          @foreach($url as $uv)
-                            @if($uv->phases_id == 4)
-                              <li><img src="{{ $uv->site_url }}" id='imgsrc' height="56" width="56"></li>
-                            @endif
-                          @endforeach
-                        </ul>
-                        </div>
-                       </div>
-                    </div>
-                    <script>
-                      var src = document.getElementById('imgsrc').src;
-                      document.getElementById("spic").src=src;
-                    </script>
-                      </td>
-                    </tr>
+					 <?php $a = 0;$b=0; ?>
+					@foreach($url as $uv)
+					  @if($uv->phases_id == 4)
+						@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+					 <?php $a = 1; ?>
+						@elseif(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+					 <?php $b = 1; ?>
+						@endif
+					  @endif
+					@endforeach
+					@if($a==1||$b==1)
+                       <tr>
+                          <th colspan="5" style='text-align: center'>已上传附件列表</th>
+                        </tr>
+						@if($a==1)
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="bigimg">
+                                <img src="" height="350" width="350" id="spic3"> 
+                              </div>
+                              <div class="xia"> <a class="prev"><</a> <a class="next">></a>
+                                <div class="items3">
+                                  <ul >
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 4)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+                                          <li>
+                                            <a target="_blank"  href="{{ $uv->site_url }}">
+                                              <img src="{{ $uv->site_url }}" id='imgsrc3' height="56" width="56">
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span>
+                                            <br> 
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                              <script>
+                                var src = document.getElementById('imgsrc3').src;
+                                document.getElementById("spic3").src=src;
+                              </script>
+                          </td>
+                        </tr>
+						@endif
+						@if($b==1)
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;width:95%; '>
+                                  <ul style="height:68px;top:50%;margin-top:-34px;">
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 4)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+                                          <li style='width:150px;float:left;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span>
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
+						@endif
+						@endif
+                        <tr>
+                          <th colspan="5" style='text-align: center'>可打印模板</th>
+                        </tr>
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;width:95%;'>
+                                  <ul style="height:68px;top:50%;margin-top:-34px;" >
+                                    @foreach($mb_words as $uv)
+                                      @if($uv->phases_id == 4)
+                                        @if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
+                                          <li style='width:150px;float:left;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->mb_name }}</span>
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
             </table>
             <div>
               <h3 style='text-align: center;'>进入下一阶段</h3>
               <div style='text-align: center;'>
-                <button class='btn btn-warning' style='margin-right: 15px;'>担保函</button>
-                <button class='btn btn-warning' style='margin-right: 15px;'>项目变更及审批</button>
-                <button class='btn btn-warning' style='margin-right: 15px;'>合同起草</button>
+              
+                <button type="submit" class='btn btn-warning' onclick='danbaohan(this)' style='margin-right: 15px;' >担保函</button>
+                <button type="submit" class='btn btn-warning' onclick="xmbgjsp(this)" style='margin-right: 15px;' >项目变更及审批</button>
+                <button type="submit" class='btn btn-warning' onclick="htqc(this)" style='margin-right: 15px;' >合同起草</button>
+              
               </div>
             </div>
             <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">
-                      立即打印
-                    </button>
-                    <span style='color:red;font-size:14px;'>(打印风险控制委员会表决表)</span>  
-                    <button type="submit" class="btn btn-primary">
-                      立即打印
-                    </button>
-                    <span style='color:red;font-size:14px;'>(打印风险控制委员会决议表)</span>
                     <a href="#fkhbjb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="last(this)" data-toggle="tab">
                         上一步
                     </a>

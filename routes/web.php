@@ -46,5 +46,5 @@ Route::post('items/phase/show/{iid}','ItemsPhasesController@create_tables');
 Route::post('items/phase/edit/{pid}','ItemsPhasesController@update_tables');
 //阶段创建生成
 Route::get('items/phase/create','ItemsPhasesController@create_phase');
-//word预览
+//word预览测试
 Route::get('word','StaticPagesController@word');

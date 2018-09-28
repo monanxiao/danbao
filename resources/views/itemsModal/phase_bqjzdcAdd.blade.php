@@ -18,9 +18,10 @@
 
 @if($bqjzdc_status == 0)
 <form action="" method='POST' enctype="multipart/form-data">
-      {{ csrf_field() }}        
-      <input type="hidden" id='table_status' name='table_status' value=''/>
-      <input type="hidden" name='btn_type' value='bqjzdc'/>
+  {{ csrf_field() }}        
+    <input type="hidden" id='table_status' name='table_status' value=''/>
+    <input type="hidden" name='btn_type' value='bqjzdc'/>
+    @include('itemsModal.publicTables')
 {{-- 面板区 --}}
 <div class="tab-content">
 
@@ -108,7 +109,7 @@
                       <label class="sr-only" for="exampleInputAmount">贷款人</label>
                       <div class="input-group">
                           <div class="input-group-addon"><i class="fa fa-user-circle-o" aria-hidden="true">&nbsp;&nbsp;贷款人</i></div>
-                          <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
+                          <input type="text" name='borrower' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
                       </div>
                   </div>
                 </fieldset>
@@ -263,12 +264,12 @@
               </td>
               <td>
                   <div class="form-group">
-                          <label class="sr-only" for="exampleInputAmount">调查人</label>
-                          <div class="input-group">
-                              <div class="input-group-addon"><i class="fa fa-male" aria-hidden="true">&nbsp;&nbsp;调查人</i></div>
-                              <input type="text" name='users_name' class="form-control" id="exampleInputAmount" placeholder="调查人" maxlength='13'>
-                          </div>
-                      </div>
+					  <label class="sr-only" for="exampleInputAmount">调查人</label>
+					  <div class="input-group">
+						  <div class="input-group-addon"><i class="fa fa-male" aria-hidden="true">&nbsp;&nbsp;调查人</i></div>
+						  <input type="text" name='users_name' class="form-control" id="exampleInputAmount" placeholder="调查人" maxlength='13'>
+					  </div>
+				  </div>
                 </td>
                 <td>
                   <div class="form-group">
@@ -289,15 +290,13 @@
             </table>
           </div>
             <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">
-                          取消
-                          </button>
-                          
-                          <a href="#fdbwr" class="btn btn-primary" style='background-color:'';' role="tab" onclick="next(this)" data-toggle="tab">
-                          下一步
-                          </a>                        
+			  <button type="button" class="btn btn-default" data-dismiss="modal">
+			  取消
+			  </button>
+			  <a href="#fdbwr" class="btn btn-primary" style='background-color:'';' role="tab" onclick="next(this)" data-toggle="tab">
+			  下一步
+			  </a>                        
             </div>
-   
     </div>
     <hr>
   </div>
@@ -305,28 +304,21 @@
   <div role="tabpanel" class="tab-pane" id="fdbwr">
     <div class="form-group">
          <textarea name='remark' style='width:95%;height:300px;margin:15px 2.5%;'>反担保物、反担保人....</textarea>
-              <h3 style='text-align:center;'>附件上传</h3>
-              <tr>
-                <td colspan="5">
-                    <!-- 导航区 -->
-                    <ul class="nav nav-tabs" role="tablist">
-                      <li role="presentation" class="active"><a href="#yezz" role="tab" data-toggle="tab">附件</a></li>
-                    </ul>
-                     
-                    <!-- 面板区 -->
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="yezz">
-                         
-                              <div class="form-group">
-                                  <div class="file-loading">
-                                      <input id="file-1" name='business_license' type="file" multiple class="file" data-upload-url="#">
-                                  </div>
-                              </div>
-                              <hr>
-                        </div>
+			<table class="table table-striped table-bordered table-hover">
+                <tr>
+					<th colspan="5" style='text-align: center'>
+					  <h3>附件上传</h3> 
+					  <span style='color:red;font-size:12px;'>一次只能上传一个格式</span>
+					</th>
+                </tr>
+                <tr>
+                  <td colspan="5">
+                    <div class="file-loading">
+                        <input id="file-1" name='business_license[]'  multiple="multiple" type="file" class="file" data-upload-url="#">
                     </div>
-                </td>
-              </tr>
+                  </td>
+                </tr>
+			</table>
           <div class="modal-footer">
               <a href="#rzdbyewspb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="last(this)" data-toggle="tab">
                         上一步
@@ -352,9 +344,10 @@
 </form>
 @elseif($bqjzdc_data['table_status'] == 2)
 <form action="{{ URL('items/phase/edit',$bqjzdc_data['id']) }}" method='POST' enctype="multipart/form-data">
-      {{ csrf_field() }}
-      <input type="hidden" id='table_status' name='table_status' value=''/>
-      <input type="hidden" name='btn_type' value='bqjzdc'/>       
+  {{ csrf_field() }}
+    <input type="hidden" id='table_status' name='table_status' value=''/>
+    <input type="hidden" name='btn_type' value='bqjzdc'/>
+       @include('itemsModal.publicTables')
 {{-- 面板区 --}}
 <div class="tab-content">
 
@@ -442,7 +435,7 @@
                       <label class="sr-only" for="exampleInputAmount">贷款人</label>
                       <div class="input-group">
                           <div class="input-group-addon"><i class="fa fa-user-circle-o" aria-hidden="true">&nbsp;&nbsp;贷款人</i></div>
-                          <input type="text" name='business_address' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
+                          <input type="text" name='borrower' class="form-control" id="exampleInputAmount" value='{{ $company->legal_person }}' maxlength='50'>
                       </div>
                   </div>
                 </fieldset>
@@ -477,7 +470,7 @@
                         <label class="sr-only" for="exampleInputAmount">成立时间</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true">&nbsp;&nbsp;成立时间</i></div>
-                            <input type="text" name='company_machin' class="form-control" id="exampleInputAmount" value='{{ $company->establish_time }}' maxlength='13'>
+                            <input type="text" name='establish_time ' class="form-control" id="exampleInputAmount" value='{{ $company->establish_time }}' maxlength='13'>
                         </div>
                     </div>
                 </fieldset>
@@ -515,7 +508,7 @@
                       <label class="sr-only" for="exampleInputAmount">担保金额</label>
                       <div class="input-group">
                           <div class="input-group-addon"><i class="fa fa-jpy" aria-hidden="true">&nbsp;&nbsp;担保金额</i></div>
-                          <input type="text" name='company_machin' class="form-control" id="exampleInputAmount" value='{{ $bqjzdc_data['loans_money'] }}' maxlength='13'>
+                          <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money'] }}' maxlength='13'>
                       </div>
                   </div>
               </fieldset>
@@ -543,7 +536,6 @@
                           <option value='日元'>日元</option>
                         </select>
                         <input type="hidden" id='hbIdval' value='{{ $bqjzdc_data['dklx'] }}'>
-
                     </div>
                   </div>
               </td>
@@ -644,29 +636,139 @@
     <div class="form-group">
      
          <textarea name='remark' style='width:95%;height:300px;margin:15px 2.5%;'>{{ $bqjzdc_data['remark'] }}</textarea>
-    
-                <h3 style='text-align: center'>附件上传</h3>
-              <tr>
-                <td colspan="5">
-                    <div class="form-group">
-                        <div class="file-loading">
-                            <input id="file-1" name='business_license' type="file" multiple class="file" data-upload-url="#">
-                        </div>
-                    </div>
-                </td>
-              </tr>
-      
+			<table class="table table-striped table-bordered table-hover">
+					<?php $a = 0;$b=0; ?>
+					@foreach($url as $uv)
+					  @if($uv->phases_id == 2)
+						@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+						<?php $a = 1; ?>
+						@elseif(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+						<?php $b = 1; ?>
+						@endif
+					  @endif
+					@endforeach
+					@if($a==1||$b==1)
+                       <tr>
+                          <th colspan="5" style='text-align: center'>已上传附件列表</th>
+                        </tr>
+						@if($a==1)
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="bigimg">
+                                <img src="" height="350" width="350" id="spic1"> 
+                              </div>
+                              <div class="xia"> <a class="prev"><</a> <a class="next">></a>
+                                <div class="items1">
+                                  <ul >
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 2)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+                                          <li>
+                                            <a target="_blank"  href="{{ $uv->site_url }}">
+                                              <img src="{{ $uv->site_url }}" id='imgsrc1' height="56" width="56">
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span>
+                                            <br> 
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                              <script>
+                                var src = document.getElementById('imgsrc1').src;
+                                document.getElementById("spic1").src=src;
+                              </script>
+                          </td>
+                        </tr>
+						@endif
+						@if($b==1)
+                        <tr>
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;width:95%;'>
+                                  <ul style="height:68px;top:50%;margin-top:-34px;">
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 2)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+                                          <li style='width:150px;float:left;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span>
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
+						@endif
+						@endif
+				<tr>
+				  <th colspan="5" style='text-align: center'>可打印模板</th>
+				</tr>
+				<tr>
+				  <td colspan="5">
+					<div class="boss">
+					  <div class="xia" style='width:1100px;'> 
+						<a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+						<a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+						<div class="items" style='height:120px;width:95%; '>
+						  <ul style="height:68px;top:50%;margin-top:-34px;" >
+							@foreach($mb_words as $uv)
+							  @if($uv->phase_id == 2)
+								@if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
+								  <li style='width:150px;float:left;'>
+									<a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+									  <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+									</a>
+									<br>
+									<span>{{ $uv->mb_name }}</span>
+									<br>
+									  <a href="{{ $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+								  </li>
+								@endif
+							  @endif
+							@endforeach
+						  </ul>
+						</div>
+						</div>
+					  </div>
+				  </td>
+				</tr>
+                      <tr>
+                        <th colspan="5" style='text-align: center'>
+                          <h3>附件上传</h3>
+                          <span style='color:red;font-size:12px;'>一次只能上传一个格式</span>
+                        </th>
+                      </tr>
+                      <tr>
+                        <td colspan="5">
+                          <div class="file-loading">
+                              <input id="file-1" name='business_license[]' multiple="multiple"  type="file" class="file" data-upload-url="#">
+                          </div>
+                        </td>
+                      </tr>
+			</table>
+  
           <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">
-                            立即打印
-              </button>
-              <span style='color:red;font-size:14px;'>(打印融资担保业务审批表)</span>  
-              <button type="submit" class="btn btn-primary">
-                立即打印
-              </button>
-              <span style='color:red;font-size:14px;'>(打印反担保物、人信息)</span>
               <a href="#rzdbyewspb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="last(this)" data-toggle="tab">
-                        上一步
+			   上一步
               </a>
               <button type="submit" class="btn btn-primary" onclick="save(this)">
                更新
@@ -984,12 +1086,12 @@
             </table>
           </div>
             <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">
-                          取消
-                          </button> 
-                          <a href="#fdbwr" class="btn btn-primary" style='background-color:'';' role="tab" onclick="next(this)" data-toggle="tab">
-                          下一步
-                          </a>                        
+			  <button type="button" class="btn btn-default" data-dismiss="modal">
+			  取消
+			  </button> 
+			  <a href="#fdbwr" class="btn btn-primary" style='background-color:'';' role="tab" onclick="next(this)" data-toggle="tab">
+			  下一步
+			  </a>                        
             </div>
    
     </div>
@@ -999,18 +1101,126 @@
   <div role="tabpanel" class="tab-pane" id="fdbwr">
     <div class="form-group">
          <fieldset disabled><textarea name='remark'  style='width:95%;height:300px;margin:15px 2.5%;'>{{ $bqjzdc_data['remark'] }}</textarea></fieldset>
+			<table class="table table-striped table-bordered table-hover">
+			 <?php $a = 0;$b=0; ?>
+			@foreach($url as $uv)
+			  @if($uv->phases_id == 2)
+				@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+			 <?php $a = 1; ?>
+				@elseif(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+			 <?php $b = 1; ?>
+				@endif
+			  @endif
+			@endforeach
+			@if($a==1||$b==1)
+				<tr>
+				  <th colspan="5" style='text-align: center'>已上传附件列表</th>
+				</tr>
+				@if($a==1)
+				<tr>
+				  <td colspan="5">
+					<div class="boss">
+					  <div class="bigimg">
+						<img src="" height="350" width="350" id="spic1"> 
+					  </div>
+					  <div class="xia"> <a class="prev"><</a> <a class="next">></a>
+						<div class="items1">
+						  <ul >
+							@foreach($url as $uv)
+							  @if($uv->phases_id == 2)
+								@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+								  <li>
+									<a target="_blank"  href="{{ $uv->site_url }}">
+									  <img src="{{ $uv->site_url }}" id='imgsrc1' height="56" width="56">
+									</a>
+									<br>
+									<span>{{ $uv->file_name }}</span>
+									<br> 
+									  <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+								  </li>
+								@endif
+							  @endif
+							@endforeach
+						  </ul>
+						</div>
+						</div>
+					  </div>
+					  <script>
+						var src = document.getElementById('imgsrc1').src;
+						document.getElementById("spic1").src=src;
+					  </script>
+				  </td>
+				</tr>
+				@endif
+				@if($b==1)
+				<tr>
+				  <td colspan="5">
+					<div class="boss">
+					  <div class="xia" style='width:1100px;'> 
+						<a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+						<a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+						<div class="items" style='height:120px;width:95%; position:relative;'>
+						  <ul style="display:absolute;height:68px;top:50%;margin-top:-34px;">
+							@foreach($url as $uv)
+							  @if($uv->phases_id == 2)
+								@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+								  <li style='width:150px;float:left;'>
+									<a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+									  <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+									</a>
+									<br>
+									<span>{{ $uv->file_name }}</span>
+									<br>
+									  <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+								  </li>
+								@endif
+							  @endif
+							@endforeach
+						  </ul>
+						</div>
+						</div>
+					  </div>
+				  </td>
+				</tr>
+				@endif
+				@endif
+				<tr>
+				  <th colspan="5" style='text-align: center'>可打印模板</th>
+				</tr>
+				<tr>
+				  <td colspan="5">
+					<div class="boss">
+					  <div class="xia" style='width:1100px;'> 
+						<a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+						<a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+						<div class="items" style='height:120px;width:95%; style="display:relative;'>
+						  <ul style="display:absolute;height:68px;top:50%;margin-top:-34px;" >
+							@foreach($mb_words as $uv)
+							  @if($uv->phase_id == 2)
+								@if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
+								  <li style='width:150px;float:left;'>
+									<a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+									  <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+									</a>
+									<br>
+									<span>{{ $uv->mb_name }}</span>
+									<br>
+									  <a href="{{ $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+								  </li>
+								@endif
+							  @endif
+							@endforeach
+						  </ul>
+						</div>
+						</div>
+					  </div>
+				  </td>
+				</tr>
+			</table>
           <div class="modal-footer">
               <a href="#rzdbyewspb" class="btn btn-primary" style='background-color:'';' role="tab" onclick="last(this)" data-toggle="tab">
                         上一步
               </a>
-              <button type="submit" class="btn btn-primary">
-                立即打印
-              </button>
-              <span style='color:red;font-size:14px;'>(打印融资担保业务审批表)</span>
-              <button type="submit" class="btn btn-primary">
-                立即打印
-              </button>
-              <span style='color:red;font-size:14px;'>(打印反担保物、人信息)</span>
               <button type="submit" class="btn btn-warning">
                 提审<br>
               </button>
@@ -1030,10 +1240,10 @@
 <script>
     // 日期选择器设置
     $('#sandbox-bqjzdc').datepicker({ 
-                                          language: "zh-CN",
-                                          orientation: "top right",
-                                          autoclose: true,
-                                          startview: 2,
-                                          todayHighlight: true
-                                        });
+									  language: "zh-CN",
+									  orientation: "top right",
+									  autoclose: true,
+									  startview: 2,
+									  todayHighlight: true
+									});
 </script>

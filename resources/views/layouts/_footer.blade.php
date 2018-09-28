@@ -9,4 +9,6 @@
     <!-- CUSTOM SCRIPTS -->
     <script src="/assets/js/custom.js"></script>
     <script src="/assets/js/jquery-3.3.1.js"></script>
-     <script src='/js/imgqiehuan.js'></script>
+	
+	
+    <script src="/js/imgqiehuan.js"></script>

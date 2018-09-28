@@ -12,6 +12,8 @@ use App\Models\Xmbgjsp;
 use App\Models\ItemsPhase;
 use App\Models\PhaseAcessory;
 use App\Models\MbWord;
+use App\Models\Hetqc;
+
 
 use App\Handlers\CreateWord;
 use App\Handlers\FileUploadHandler;
@@ -45,6 +47,7 @@ class ItemsPhasesController extends Controller
         if($request->btn_type == 'cscl')
         {   
             //初审材料
+            //附件
             $file = $request->business_license;
         	//录入的字段白名单
         	$data = $request->only([
@@ -81,7 +84,7 @@ class ItemsPhasesController extends Controller
         {
             //保前尽职调查
             
-            //初审材料
+            //附件
             $file = $request->business_license;
             //录入的字段白名单
             $data = $request->only([
@@ -108,7 +111,7 @@ class ItemsPhasesController extends Controller
             //提交的阶段
             $num = 2;
             //调用入库方法
-            $status = $this->phase_create($data,$iid,$status,$table,$num,$file);
+            $status = $this->phase_create($data,$iid,$status,$table,$num,$file,$request);
                 //是否调用成功
                 if($status)
                 {
@@ -125,6 +128,8 @@ class ItemsPhasesController extends Controller
 
         }elseif ($request->btn_type == 'fxhbjb')
         {   //风险审查审批
+            //附件
+            $file = $request->business_license;
              //白名单字段
             $data = $request->only([
                                     'risk_name',
@@ -154,7 +159,7 @@ class ItemsPhasesController extends Controller
             //提交的阶段
             $num = 4;
             //调用入库方法
-            $status = $this->phase_create($data,$iid,$status,$table,$num,$file);
+            $status = $this->phase_create($data,$iid,$status,$table,$num,$file,$request);
                 //是否调用成功
                 if($status)
                 {
@@ -167,10 +172,21 @@ class ItemsPhasesController extends Controller
                 }
 
         }elseif ($request->btn_type == 'dbh')
-        {   //暂无 担保函
+        {   
+            //阶段类型传入
+            $type = $request->btn_type;
+            //担保函
+            $this->items_ok($type,$iid,$request);
+
+            return back();
 
         }elseif ($request->btn_type == 'xmbgjsp') 
         {   
+            // dd($request);exit;
+            //阶段类型传入
+            $type = $request->btn_type;
+            //调用阶段更改方法
+            $this->items_ok($type,$iid,$request);
             //项目变更及审批
             //白名单字段
             $data = $request->only([
@@ -187,8 +203,10 @@ class ItemsPhasesController extends Controller
             $table = new Xmbgjsp();
             //提交的阶段
             $num = 6;
+            //附件
+            $file = $request->business_license;
             //调用入库方法
-            $status = $this->phase_create($data,$iid,$status,$table,$num);
+            $status = $this->phase_create($data,$iid,$status,$table,$num,$file,$request);
                 //是否调用成功
                 if($status)
                 {
@@ -198,13 +216,89 @@ class ItemsPhasesController extends Controller
                     return '数据录入有误';
                 }
         }elseif ($request->btn_type == 'htqcspjqd')
-        {   //暂无 合同起草审批及签订
+        {   
+            //阶段类型传入
+            $type = $request->btn_type;
+            //合同起草审批及签订
+            $this->items_ok($type,$iid,$request);
 
         }elseif ($request->btn_type == 'fkcx')
         {   //暂无放款程序
 
         }
     }
+
+    //项目阶段选择
+    public function items_ok($type,$iid,$request){
+
+        //操作的三个阶段表
+        //创建word文档
+        $createword = new CreateWord();
+        //储存附件地址
+        $mb_word = new MbWord();
+        //担保函
+        //项目变更及审批
+        $xmbgjsp = new Xmbgjsp();
+
+        //合同起草
+        $hetqc = new Hetqc();
+        //判断传参类型
+        if($type == 'dbh'){
+           //修改阶段状态
+            $status = ItemsPhaseCreate::where([
+                                                ['items_id', '=', $iid],
+                                                ['phases_id','=',5]
+                                            ])->update(['phases_status'=>'进行中']);
+             //调用模板创建模板方法   
+             $array = $createword->create($request,5,$iid);
+              //储存文件地址
+                     foreach($array as $k => $v){
+                        //遍历数据入库
+                        $mb_word->insert([
+                                            'mb_name'   =>  $k,
+                                            'items_id'  =>  $iid,
+                                            'phase_id'  =>  5,
+                                            'site_url'  =>  $v,
+                                            'created_at'=>  date('Y-m-d H:i:s')
+                                        ]);
+                     }
+
+        }elseif($type == 'xmbgjsp'){
+
+           //修改阶段状态
+            $status = ItemsPhaseCreate::where([
+                                                ['items_id', '=', $iid],
+                                                ['phases_id','=',5]
+                                            ])->update(['phases_status'=>'跳过']);
+
+             //修改阶段状态
+              $status = ItemsPhaseCreate::where([
+                                                ['items_id', '=', $iid],
+                                                ['phases_id','=',6]
+                                            ])->update(['phases_status'=>'进行中']);
+
+        }elseif($type == 'htqcspjqd'){
+
+           //修改阶段状态
+            $status = ItemsPhaseCreate::where([
+                                                ['items_id', '=', $iid],
+                                                ['phases_id','=',5]
+                                            ])->update(['phases_status'=>'跳过']);
+
+            //修改阶段状态
+            $status = ItemsPhaseCreate::where([
+                                                ['items_id', '=', $iid],
+                                                ['phases_id','=',6]
+                                            ])->update(['phases_status'=>'跳过']);
+            //修改阶段状态
+            $status = ItemsPhaseCreate::where([
+                                                ['items_id', '=', $iid],
+                                                ['phases_id','=',7]
+                                            ])->update(['phases_status'=>'进行中']);
+        }
+
+    }
+
 
     //更新表单数据
     public function update_tables($iid,Request $request)
@@ -236,7 +330,6 @@ class ItemsPhasesController extends Controller
             $status = $request->table_status;
             //第一个阶段
             $pid = 1;
-            // dd($data);exit;
             //调用更新方法
             $status = $this->phase_update($table,$data,$pid,$status,$file,$request,$iid);
 
@@ -277,7 +370,7 @@ class ItemsPhasesController extends Controller
             //第一个阶段
             $pid = 2;
             //调用更新方法
-            $status = $this->phase_update($table,$data,$pid,$status,$file);
+            $status = $this->phase_update($table,$data,$pid,$status,$file,$request,$iid);
             //判断是否执行成功
             if($status){
 
@@ -322,7 +415,7 @@ class ItemsPhasesController extends Controller
             //第一个阶段
             $pid = 4;
             //调用更新方法
-            $status = $this->phase_update($table,$data,$pid,$status,$file);
+            $status = $this->phase_update($table,$data,$pid,$status,$file,$request,$iid);
             //判断是否执行成功
             if($status){
 

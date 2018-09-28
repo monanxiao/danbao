@@ -62,10 +62,15 @@
 
         <button type="button" id='title_1' class="btn  btn-sm" style='color:#fff;font-size:16px;background:#00FF00;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
           {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>进行中</b></span>
-      @elseif( $pv->phases_status == '完成' )
 
+      @elseif( $pv->phases_status == '完成' )
       <button type="button" id='title_1' class="btn btn-info btn-sm" style='font-size:16px;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
        {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>完成</b></span>
+
+      @elseif($pv->phases_status == '跳过')
+      <button type="button" id='title_1' class="btn btn-sm" style='font-size:16px;background:#ccc;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
+       {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>跳过</b></span>
+
       @else
         <button type="button" id='title_1' class="btn btn-sm" style='color:#fff;background: #F5DEB3;font-size:16px;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
            {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>未开始</b></span>
@@ -79,6 +84,58 @@
     </li>
     @endforeach
 </ul>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<div class="ystep1"></div>
+<script type="text/javascript" >
+    $(".ystep1").loadStep({
+      //可选值：small,large
+      size: "large",
+      //ystep配色方案
+      //可选值：green,blue
+      color: "green",
+      steps: [{
+        title: "初审材料",
+      },{
+        title: "保前尽职调查",
+      },{
+        title: "反担保落实",
+      },{
+        title: "风险审查审批",
+      },{
+        title: "担保函",
+      },{
+        title: "项目变更及审批",
+      },{
+        title: "合同起草、审批及签订、公证",
+      },{
+        title: "放款程序",
+      }]
+
+    });
+	@foreach($phase as $pv)
+      @if( $pv->phases_status == '进行中' )
+
+      @elseif( $pv->phases_status == '完成' )
+
+      @elseif($pv->phases_status == '跳过')
+
+      @else
+
+      @endif  
+    @endforeach
+
+
+</script>
 
 <div style='clear:both;'></div>
 <div id='gb' class='custom-tabs-line tabs-line-bottom left-aligned' style='margin-top:30px;'>
@@ -156,6 +213,7 @@
  
   
 <script>
+            
     // 日期选择器设置
     $('#sandbox-container').datepicker({ 
                                           language: "zh-CN",
@@ -164,14 +222,14 @@
                                           startview: 2,
                                           todayHighlight: true
                                         });
-	function objbtn(o){
-		// 获取阶段名称
-		var title = $(o).parent().find("#pname").val();
+  	function objbtn(o){
+  		// 获取阶段名称
+  		var title = $(o).parent().find("#pname").val();
 
-		var phase_title = new Date().toLocaleDateString(); 
-		// 写入阶段名称到span
-		$("span[name='phase_title']").each(function() { $(this).text(title); }); 
-	}
+  		var phase_title = new Date().toLocaleDateString(); 
+  		// 写入阶段名称到span
+  		$("span[name='phase_title']").each(function() { $(this).text(title); }); 
+  	}
 
     //保存数据可以修改
      function save(o){
@@ -185,6 +243,26 @@
       $("input#table_status").val(status);
       // $(o).parent().find("input#table_status").val(status);
      } 
+
+// 选择阶段传参阶段标识
+    //担保函
+    function danbaohan(o){
+                    var status = 'dbh';
+                     $("input#table_status").val(status);
+                   }
+     //项目审查及审批
+     function xmbgjsp(o){
+       var status = 'xmbgjsp';
+       $("input#table_status").val(status);
+     }
+
+     //合同起草
+     function htqc(o){
+       var status = 'htqcspjqd';
+       $("input#table_status").val(status);
+     }
+//选择阶段传参标识结束
+
 
     // 下一步
     function next(o){
@@ -240,8 +318,10 @@
                                   }
                               }
                           }
+
       function doword(doc){ 
-         var WordApp=null;
+
+         var WordApp = null;
          try{
             WordApp = new ActiveXObject("Word.Application"); 
          }catch(e){
@@ -252,17 +332,6 @@
         WordApp.Documents.Add(doc,true);
     }
     
-    function doword(doc){ 
-         var WordApp=null;
-         try{
-            WordApp = new ActiveXObject("Word.Application"); 
-         }catch(e){
-            alert("IE的安全级别过高!请在IE的菜单栏中:工具——INTERNET选项——安全---本地Intranet——自定义级别——对没有标记为安全的activeX控件...那句改为启用或提示!");
-            return;
-        }
-        WordApp.Application.Visible=true;
-        WordApp.Documents.Add(doc,true);
-    }
 
   </script>
 

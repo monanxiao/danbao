@@ -18,8 +18,8 @@ class CreateCreateItemsTablesTable extends Migration
             $table->integer('items_id')->comment('项目id');
             $table->string('loans_use')->comment('贷款用途');
             $table->string('borrower')->comment('贷款人');
-            $table->integer('deadline')->comment('贷款期限');
-            $table->integer('loans_money')->comment('贷款金额');
+            $table->integer('deadline')->comment('担保期限');
+            $table->integer('loans_money')->comment('担保金额');
             $table->float('rate')->comment('担保费率');
             $table->string('measure')->comment('反担保措施');
             $table->integer('table_status')->comment('数据表状态');

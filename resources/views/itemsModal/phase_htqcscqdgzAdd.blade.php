@@ -150,7 +150,10 @@
                 </td>
             </tr>
             <tr>
-                <th colspan="3" style='text-align: center'><h3>附件上传</h3></th>
+				<th colspan="5" style='text-align: center'>
+				  <h3>附件上传</h3> 
+				  <span style='color:red;font-size:12px;'>一次只能上传一个格式</span>
+				</th>
             </tr>
               <tr>
                 <td colspan="3">
@@ -174,6 +177,22 @@
                 </td>
               </tr>
             </table>
+			
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" onclick="save(this)">
+               保存
+              </button>
+              <span style='color:red;font-size:14px;'>(保数据可修改)</span> 
+              <button type="submit" class="btn btn-success" onclick="ok(this)">
+                完成
+              </button>
+              <span style='color:red;font-size:14px;'>(进入下一阶段)</span>   
+              <button type="submit" class="btn btn-warning">
+                提审<br>
+              </button>
+              <span style='color:red;font-size:14px;'>(领导审批)</span>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+          </div>
           </div>
           </div>
       </div>

@@ -12,6 +12,8 @@ use App\Models\CreateItemsTable;
 use App\Models\investigating;
 use App\Models\PhaseAcessory;
 use App\Models\Fxscsp;
+use App\Models\MbWord;
+use App\Models\Xmbgjsp;
 
 class ItemsController extends Controller
 {
@@ -103,7 +105,11 @@ class ItemsController extends Controller
                             ->select('phase_acessories.phases_id','phase_acessories.site_url','phase_acessories.file_name')
                             ->get();
 
-        
+        //取出阶段word模板
+        $mb_words = item::LeftJoin('mb_words','items.id','=','mb_words.items_id')
+                                ->where('items.id',$iid)
+                                ->select('mb_words.*')
+                                ->get();
         //调用方法获取阶段数据
         //第一阶段数据 初审材料
         $cscl = new CreateItemsTable();
@@ -120,10 +126,9 @@ class ItemsController extends Controller
         $bqjzdc_data = $bqjzdc_array['phasetable'];
         //数据状态
         $bqjzdc_status = $bqjzdc_array['phasestatus'];
-        // dd();exit;
 
         //第三阶段数据 反担落实
-        
+        //暂无反担保落实
         //第四阶段 风险审查审批
         $fxscsp = new Fxscsp();
         $fxscsp_array = $this->phaseDataGet($iid,$fxscsp);
@@ -131,8 +136,18 @@ class ItemsController extends Controller
         $fxscsp_data = $fxscsp_array['phasetable'];
         //数据状态
         $fxscsp_status = $fxscsp_array['phasestatus'];
+
+        //第五阶段担保函
+        
+        //第六阶段项目变更及审批
+        $xmbgjsp = new Xmbgjsp();
+        $xmbgjsp_array = $this->phaseDataGet($iid,$xmbgjsp);
+        //数据集合
+        $xmbgjsp_data = $xmbgjsp_array['phasetable'];
+        //数据状态
+        $xmbgjsp_status = $xmbgjsp_array['phasestatus'];
                             
-        return view('items.itemsPhaseShow',compact('items','phase','company','phasetable','phasestatus','bqjzdc_data','bqjzdc_status','url','fxscsp_data','fxscsp_status'));
+        return view('items.itemsPhaseShow',compact('items','phase','company','phasetable','phasestatus','bqjzdc_data','bqjzdc_status','url','fxscsp_data','fxscsp_status','mb_words','xmbgjsp_data','xmbgjsp_status'));
     }
     //获取阶段数据
     public function phaseDataGet($iid,$data){
