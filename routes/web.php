@@ -31,10 +31,13 @@ Route::post('natural','MovementsController@create_natural');
 //公司项目列表
 Route::get('clients/items/{cid}','StaticPagesController@ClientsCompanyItems');
 
+//所有项目列表
+Route::get('items/list','ItemsController@show');
+
 //自然人项目列表
 Route::get('natural/items/{cid}','StaticPagesController@ClientsNaturalItems');
 
-//创建项目
+//创建项目 
 Route::post('clients/items/{cid}','ItemsController@CreateItems');
 Route::post('natural/items/{cid}','ItemsController@CreateItems');
 //项目阶段详情
@@ -48,3 +51,6 @@ Route::post('items/phase/edit/{pid}','ItemsPhasesController@update_tables');
 Route::get('items/phase/create','ItemsPhasesController@create_phase');
 //word预览测试
 Route::get('word','StaticPagesController@word');
+
+//所有模板取出
+Route::get('word/list','StaticPagesController@Wordshow');

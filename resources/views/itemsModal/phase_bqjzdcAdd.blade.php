@@ -343,7 +343,7 @@
  </div>
 </form>
 @elseif($bqjzdc_data['table_status'] == 2)
-<form action="{{ URL('items/phase/edit',$bqjzdc_data['id']) }}" method='POST' enctype="multipart/form-data">
+<form action="{{ URL('items/phase/edit',$phasetable['items_id']) }}" method='POST' enctype="multipart/form-data">
   {{ csrf_field() }}
     <input type="hidden" id='table_status' name='table_status' value=''/>
     <input type="hidden" name='btn_type' value='bqjzdc'/>
@@ -637,42 +637,38 @@
      
          <textarea name='remark' style='width:95%;height:300px;margin:15px 2.5%;'>{{ $bqjzdc_data['remark'] }}</textarea>
 			<table class="table table-striped table-bordered table-hover">
-					<?php $a = 0;$b=0; ?>
-					@foreach($url as $uv)
-					  @if($uv->phases_id == 2)
-						@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
-						<?php $a = 1; ?>
-						@elseif(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
-						<?php $b = 1; ?>
-						@endif
-					  @endif
-					@endforeach
-					@if($a==1||$b==1)
-                       <tr>
+                       <tr id="all_box2" style="display:none;" >
                           <th colspan="5" style='text-align: center'>已上传附件列表</th>
                         </tr>
-						@if($a==1)
-                        <tr>
+                        <tr id="img_box2" style="display:none;" >
                           <td colspan="5">
                             <div class="boss">
                               <div class="bigimg">
-                                <img src="" height="350" width="350" id="spic1"> 
+                                <img src="" height="350" width="350" id="spic2"> 
                               </div>
                               <div class="xia"> <a class="prev"><</a> <a class="next">></a>
-                                <div class="items1">
+                                <div class="items2">
                                   <ul >
+								  <?php $isshow_img = false;$isshow_doc = false; ?>
                                     @foreach($url as $uv)
                                       @if($uv->phases_id == 2)
                                         @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
                                           <li>
                                             <a target="_blank"  href="{{ $uv->site_url }}">
-                                              <img src="{{ $uv->site_url }}" id='imgsrc1' height="56" width="56">
+                                              <img src="{{ $uv->site_url }}" id='imgsrc2' height="56" width="56">
                                             </a>
                                             <br>
                                             <span>{{ $uv->file_name }}</span>
                                             <br> 
                                               <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
-                                          </li>
+											</li>
+											@if(!$isshow_img)
+											<script type="text/javascript" >
+												document.getElementById("all_box2").style.display="";
+												document.getElementById("img_box2").style.display="";
+											</script>
+											<?php $isshow_img = true; ?>
+											@endif
                                         @endif
                                       @endif
                                     @endforeach
@@ -681,14 +677,12 @@
                                 </div>
                               </div>
                               <script>
-                                var src = document.getElementById('imgsrc1').src;
-                                document.getElementById("spic1").src=src;
+                                var src = document.getElementById('imgsrc2').src;
+                                document.getElementById("spic2").src=src;
                               </script>
                           </td>
                         </tr>
-						@endif
-						@if($b==1)
-                        <tr>
+                        <tr id="docx_box2" style="display:none;" >
                           <td colspan="5">
                             <div class="boss">
                               <div class="xia" style='width:1100px;'> 
@@ -708,6 +702,13 @@
                                             <br>
                                               <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
                                           </li>
+											@if(!$isshow_doc)
+											<script type="text/javascript" >
+												document.getElementById("all_box2").style.display="";
+												document.getElementById("docx_box2").style.display="";
+											</script>
+											<?php $isshow_doc = true; ?>
+											@endif
                                         @endif
                                       @endif
                                     @endforeach
@@ -717,8 +718,6 @@
                               </div>
                           </td>
                         </tr>
-						@endif
-						@endif
 				<tr>
 				  <th colspan="5" style='text-align: center'>可打印模板</th>
 				</tr>
@@ -734,13 +733,13 @@
 							  @if($uv->phase_id == 2)
 								@if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
 								  <li style='width:150px;float:left;'>
-									<a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+									<a href="#" onClick="doword('{{ URL(''). '/' . $uv->site_url }}')">
 									  <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
 									</a>
 									<br>
 									<span>{{ $uv->mb_name }}</span>
 									<br>
-									  <a href="{{ $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+									  <a href="{{ '/' . $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
 								  </li>
 								@endif
 							  @endif
@@ -778,11 +777,11 @@
                 完成
               </button>
               <span style='color:red;font-size:14px;'>(进入下一阶段)</span>
-              <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>   
               <button type="submit" class="btn btn-warning">
                 提审<br>
               </button>
               <span style='color:red;font-size:14px;'>(领导审批)</span>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>   
           </div>            
     </div>
     <hr>
@@ -1102,88 +1101,87 @@
     <div class="form-group">
          <fieldset disabled><textarea name='remark'  style='width:95%;height:300px;margin:15px 2.5%;'>{{ $bqjzdc_data['remark'] }}</textarea></fieldset>
 			<table class="table table-striped table-bordered table-hover">
-			 <?php $a = 0;$b=0; ?>
-			@foreach($url as $uv)
-			  @if($uv->phases_id == 2)
-				@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
-			 <?php $a = 1; ?>
-				@elseif(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
-			 <?php $b = 1; ?>
-				@endif
-			  @endif
-			@endforeach
-			@if($a==1||$b==1)
-				<tr>
-				  <th colspan="5" style='text-align: center'>已上传附件列表</th>
-				</tr>
-				@if($a==1)
-				<tr>
-				  <td colspan="5">
-					<div class="boss">
-					  <div class="bigimg">
-						<img src="" height="350" width="350" id="spic1"> 
-					  </div>
-					  <div class="xia"> <a class="prev"><</a> <a class="next">></a>
-						<div class="items1">
-						  <ul >
-							@foreach($url as $uv)
-							  @if($uv->phases_id == 2)
-								@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
-								  <li>
-									<a target="_blank"  href="{{ $uv->site_url }}">
-									  <img src="{{ $uv->site_url }}" id='imgsrc1' height="56" width="56">
-									</a>
-									<br>
-									<span>{{ $uv->file_name }}</span>
-									<br> 
-									  <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
-								  </li>
-								@endif
-							  @endif
-							@endforeach
-						  </ul>
-						</div>
-						</div>
-					  </div>
-					  <script>
-						var src = document.getElementById('imgsrc1').src;
-						document.getElementById("spic1").src=src;
-					  </script>
-				  </td>
-				</tr>
-				@endif
-				@if($b==1)
-				<tr>
-				  <td colspan="5">
-					<div class="boss">
-					  <div class="xia" style='width:1100px;'> 
-						<a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
-						<a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
-						<div class="items" style='height:120px;width:95%; position:relative;'>
-						  <ul style="display:absolute;height:68px;top:50%;margin-top:-34px;">
-							@foreach($url as $uv)
-							  @if($uv->phases_id == 2)
-								@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
-								  <li style='width:150px;float:left;'>
-									<a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
-									  <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
-									</a>
-									<br>
-									<span>{{ $uv->file_name }}</span>
-									<br>
-									  <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
-								  </li>
-								@endif
-							  @endif
-							@endforeach
-						  </ul>
-						</div>
-						</div>
-					  </div>
-				  </td>
-				</tr>
-				@endif
-				@endif
+                       <tr id="all_box2" style="display:none;" >
+                          <th colspan="5" style='text-align: center'>已上传附件列表</th>
+                        </tr>
+                        <tr id="img_box2" style="display:none;" >
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="bigimg">
+                                <img src="" height="350" width="350" id="spic2"> 
+                              </div>
+                              <div class="xia"> <a class="prev"><</a> <a class="next">></a>
+                                <div class="items2">
+                                  <ul >
+								  <?php $isshow_img = false;$isshow_doc = false; ?>
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 2)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
+                                          <li>
+                                            <a target="_blank"  href="{{ $uv->site_url }}">
+                                              <img src="{{ $uv->site_url }}" id='imgsrc2' height="56" width="56">
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span>
+                                            <br> 
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+											</li>
+											@if(!$isshow_img)
+											<script type="text/javascript" >
+												document.getElementById("all_box2").style.display="";
+												document.getElementById("img_box2").style.display="";
+											</script>
+											<?php $isshow_img = true; ?>
+											@endif
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                              <script>
+                                var src = document.getElementById('imgsrc2').src;
+                                document.getElementById("spic2").src=src;
+                              </script>
+                          </td>
+                        </tr>
+                        <tr id="docx_box2" style="display:none;" >
+                          <td colspan="5">
+                            <div class="boss">
+                              <div class="xia" style='width:1100px;'> 
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <div class="items" style='height:120px;width:95%;'>
+                                  <ul style="height:68px;top:50%;margin-top:-34px;">
+                                    @foreach($url as $uv)
+                                      @if($uv->phases_id == 2)
+                                        @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
+                                          <li style='width:150px;float:left;'>
+                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                              <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                            <br>
+                                            <span>{{ $uv->file_name }}</span>
+                                            <br>
+                                              <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
+                                          </li>
+											@if(!$isshow_doc)
+											<script type="text/javascript" >
+												document.getElementById("all_box2").style.display="";
+												document.getElementById("docx_box2").style.display="";
+											</script>
+											<?php $isshow_doc = true; ?>
+											@endif
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                  </ul>
+                                </div>
+                                </div>
+                              </div>
+                          </td>
+                        </tr>
 				<tr>
 				  <th colspan="5" style='text-align: center'>可打印模板</th>
 				</tr>
@@ -1199,13 +1197,13 @@
 							  @if($uv->phase_id == 2)
 								@if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
 								  <li style='width:150px;float:left;'>
-									<a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+									<a href="#" onClick="doword('{{ URL('') . '/'. $uv->site_url }}')">
 									  <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
 									</a>
 									<br>
 									<span>{{ $uv->mb_name }}</span>
 									<br>
-									  <a href="{{ $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+									  <a href="{{ '/' . $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
 								  </li>
 								@endif
 							  @endif

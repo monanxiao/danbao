@@ -5,7 +5,7 @@
 
 
                     <li>
-                        <a href=""><i class="fa fa-desktop "></i>首页</a>
+                        <a href="/"><i class="fa fa-desktop "></i>首页</a>
                     </li>
 
                     
@@ -27,10 +27,10 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-list" aria-hidden="true"></i>项目管理</a>
+                        <a href="{{ URL('items/list') }}"><i class="fa fa-list" aria-hidden="true"></i>项目管理</a>
                     </li>
                      <li>
-                        <a href="#"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>文档模板</a>
+                        <a href="{{ URL('word/list') }}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>文档模板</a>
                     </li>
                      <li>
                         <a href="#"><i class="fa fa-bar-chart" aria-hidden="true"></i>统计报表</a>

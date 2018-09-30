@@ -4,175 +4,84 @@
 <h5>
   项目详情
 </h5>
+<h4 style="text-align:center;width:100%;padding-bottom:10px;border-bottom:1px dashed #ccc;" >{{ $items->items_name }}</h4>
+	
+  <div id="stepBar" class="ui-stepBar-wrap">
+  	<div class="ui-stepBar">
+  		<div class="ui-stepProcess"></div>
+  	</div>
+  	<div class="ui-stepInfo-wrap">
+  		<table class="ui-stepLayout" border="0" cellpadding="0" cellspacing="0">
+  		<tr>
+  			<?php $i=0;$now=0; ?>
+  			@foreach($phase as $pv)
+  				<?php $i++; ?>
+  			  @if( $pv->phases_status == '进行中' )
+  				<?php $now=$i; ?>
+  				<td class="ui-stepInfo">
 
-    <table class="table table-striped table-bordered table-hover">
-        <thead>
-            <tr>
-            	<th colspan="6" style='text-align:center;'><h4>{{ $items->items_name }}</h4></th>
-            </tr>
-{{--             <tr>
-            	<th>客户</th>
-            	<th style='width:150px;text-align:center;'>金额</th>
-            	<th style='width:130px;text-align:center;'>开始</th>
-            	<th style='width:130px;text-align:center;'>截止</th>
-            	<th style='width:60px;text-align:center;'>期限</th>
-            	<th style='width:90px;text-align:center;'>剩余</th>
-            </tr> --}}
-        </thead>
-       	{{-- <tbody>
-       		<tr>
-       			<td>{{ $item->nickname }}</td>
-       			<td>{{ $item->redit_money }}</td>
-       			<td style='text-align:center;'>
-                    @if($item->start_date != 0)
-                    {{ date('Y-m-d',$item->start_date) }}
-                    @else
-                    未设置
-                    @endif
-                </td>
-       			<td style='text-align:center;'>
-                    @if($item->stop_date != 0)
-                    {{ date('Y-m-d',$item->stop_date) }}
-                    @else
-                    未设置
-                    @endif
-                </td>
-       			 @if($item->stop_date != 0 && $item->start_date != 0)
-                        <td style='text-align:center;'>{{ floor(($item->stop_date - $item->start_date)/(60*60*24)) }}天</td>
-                    @else
-                        <td style='text-align:center;'>未设置</td>
-                    @endif
-                    @if($item->stop_date != 0 && $item->start_date != 0)
-                        @if($item->stop_date - time() > 0)
-                       <td style='text-align:center;'> {{ floor(($item->stop_date - time())/(60*60*24) ) }}天 </td>
-                       @else
-                       <td style='text-align:center;'> 已超时{{ floor(($item->stop_date - time())/(60*60*24) ) }}天 </td>
-                       @endif
-                    @else
-                        <td style='text-align:center;'>无</td>
-                    @endif
-       		</tr>
-       	</tbody> --}}
-    </table>
-<ul class="list-inline">
-    @foreach($phase as $pv)
-    <li style=' float:left; margin-left:10px; '> 
+  					<p class="top_text" style="color:#f00;" >{{$pv->phases_status}}</p>
 
-      @if( $pv->phases_status == '进行中' )
+  			  @elseif( $pv->phases_status == '完成' )
 
-        <button type="button" id='title_1' class="btn  btn-sm" style='color:#fff;font-size:16px;background:#00FF00;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
-          {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>进行中</b></span>
+  				<?php $now=$i; ?>
+  				<td class="ui-stepInfo">
+  					<p class="top_text" style="color:#00b100;">{{$pv->phases_status}}</p>
 
-      @elseif( $pv->phases_status == '完成' )
-      <button type="button" id='title_1' class="btn btn-info btn-sm" style='font-size:16px;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
-       {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>完成</b></span>
+  			  @elseif($pv->phases_status == '跳过')
 
-      @elseif($pv->phases_status == '跳过')
-      <button type="button" id='title_1' class="btn btn-sm" style='font-size:16px;background:#ccc;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
-       {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>跳过</b></span>
+  				<td class="ui-stepInfo">
+  					<p class="top_text" style="color:#428bca;">{{$pv->phases_status}}</p>
 
-      @else
-        <button type="button" id='title_1' class="btn btn-sm" style='color:#fff;background: #F5DEB3;font-size:16px;' data-toggle="modal" data-target="#{{ $pv->phase_type }}" onclick="objbtn(this)">
-           {{ $pv->phase_name }} <br><span style='color:black;font-size:12px;'><b>未开始</b></span>
-      @endif    
-           
-        </button>
-      
-           
-        <i class="fa fa-arrow-circle-right" aria-hidden="true" style='margin-left:15px;'></i>
-        <input type="hidden" id='pname' value='{{ $pv->phase_name }}' />
-    </li>
-    @endforeach
-</ul>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<div class="ystep1"></div>
-<script type="text/javascript" >
-    $(".ystep1").loadStep({
-      //可选值：small,large
-      size: "large",
-      //ystep配色方案
-      //可选值：green,blue
-      color: "green",
-      steps: [{
-        title: "初审材料",
-      },{
-        title: "保前尽职调查",
-      },{
-        title: "反担保落实",
-      },{
-        title: "风险审查审批",
-      },{
-        title: "担保函",
-      },{
-        title: "项目变更及审批",
-      },{
-        title: "合同起草、审批及签订、公证",
-      },{
-        title: "放款程序",
-      }]
+  			  @else
+  				<td class="ui-stepInfo">
+  					<p class="top_text" style="color:#ccc;">{{$pv->phases_status}}</p>
 
-    });
-	@foreach($phase as $pv)
-      @if( $pv->phases_status == '进行中' )
+          @endif 
 
-      @elseif( $pv->phases_status == '完成' )
+  					<a class="ui-stepSequence"  data-toggle="modal" data-target="#{{$pv->phase_type}}" onclick="objbtn(this)" >{{$i}}</a>
+            <input type="hidden" id='phase_id' value='{{$i}}'>
 
-      @elseif($pv->phases_status == '跳过')
-
-      @else
-
-      @endif  
-    @endforeach
-
-
-</script>
+  					<p class="ui-stepName">{{ $pv->phase_name }}</p>
+  				</td>
+  			  
+  			@endforeach
+  		</tr>
+  		</table>
+  	</div>
+  </div>
 
 <div style='clear:both;'></div>
 <div id='gb' class='custom-tabs-line tabs-line-bottom left-aligned' style='margin-top:30px;'>
     <ul class="nav nav-tabs">
         <li role="presentation" class="active">
-            <a href="#tab-bottom-left1" role="tab" data-toggle="tab">
+            <a href="#left1" role="tab" data-toggle="tab">
                 全部动态
             </a>
         </li>
         <li role="presentation" >
-            <a href="#tab-bottom-left2" role="tab" data-toggle="tab">
+            <a href="#left2" role="tab" data-toggle="tab">
             意见<span class="badge">0</span>
             </a>
         </li>
         <li role="presentation" >
-            <a href="#tab-bottom-left3" role="tab" data-toggle="tab">
-            word文档<span class="badge">0</span>
+            <a href="#left3" role="tab" data-toggle="tab">
+            文档附件<span class="badge">0</span>
             </a>
         </li>
         <li role="presentation" >
-            <a href="#tab-bottom-left3" role="tab" data-toggle="tab">
-            归档<span class="badge">0</span>
+            <a href="#left4" role="tab" data-toggle="tab">
+            合同模板<span class="badge">0</span>
             </a>
         </li>
     </ul>
 </div>
-<div class="tab-content">
-    <div class="tab-pane fade in active success" id="tab-bottom-left1">
-        <div class="table-responsive" style='margin-top:5px;'>
-            <table class="table table-striped table-bordered table-hover">
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+<div id='gb' class="tab-content">
+    <div class="tab-pane fade in active success" id="left1">
+            全部动态
     </div> 
-    <div class="tab-pane fade success" id="tab-bottom-left2">
-        <div class="table-responsive" style='margin-top:5px;'>
+    <div class="tab-pane fade success" id="left2">
+
             <table class="table table-striped table-bordered table-hover">
                 <tbody>
                     <tr class="success" >
@@ -187,7 +96,39 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+
+    </div>
+     <div class="tab-pane fade success" id="left3">
+            @foreach($mb_words as $uv)
+                      @if($uv->phase_id == 1)
+                        @if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
+                          <li style='width:150px;float:left;'>
+                            <a href="#" onClick="doword('{{ URL(''). '/' . $uv->site_url  }}')">
+                              <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+                            </a>
+                            <br>
+                            <span>{{ $uv->mb_name }}</span>
+                            <br>
+                              <a href="{{ '/' .$uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+                          </li>
+                        @endif
+                      @endif
+            @endforeach
+    </div>
+    <div class="tab-pane fade success" id="left4">
+              @foreach($mb_words as $uv)
+                          @if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
+                            <li style='width:150px;float:left;'>
+                              <a href="#" onClick="doword('{{ URL(''). '/' . $uv->site_url  }}')">
+                                <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
+                              </a>
+                              <br>
+                              <span>{{ $uv->mb_name }}</span>
+                              <br>
+                                <a href="{{ '/' .$uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+                            </li>
+                        @endif
+              @endforeach
     </div>
 </div>
 {{-- 初审材料 --}}
@@ -210,10 +151,18 @@
 @include('itemsModal.phase_fkcxAdd')
 
 @endif
- 
+
   
-<script>
-            
+<script type="text/javascript" >
+
+
+    $(function(){
+                  stepBar.init("stepBar", {
+                    step : <?=$now?>,
+                    change : false,
+                    animation : true
+                  });
+                });
     // 日期选择器设置
     $('#sandbox-container').datepicker({ 
                                           language: "zh-CN",
@@ -229,6 +178,17 @@
   		var phase_title = new Date().toLocaleDateString(); 
   		// 写入阶段名称到span
   		$("span[name='phase_title']").each(function() { $(this).text(title); }); 
+       
+        //判断是否完成上一阶段
+      var status = {{ $phasestatus }};
+
+      var phase_id = $(o).parent().find("#phase_id").val()
+
+      if(phase_id != phase_id && status != 0){ 
+
+          alert('请完成上一阶段');
+      }
+
   	}
 
     //保存数据可以修改

@@ -13,6 +13,7 @@ use App\Models\ItemsPhase;
 use App\Models\PhaseAcessory;
 use App\Models\MbWord;
 use App\Models\Hetqc;
+use App\Models\Item;
 
 
 use App\Handlers\CreateWord;
@@ -248,7 +249,7 @@ class ItemsPhasesController extends Controller
             $status = ItemsPhaseCreate::where([
                                                 ['items_id', '=', $iid],
                                                 ['phases_id','=',5]
-                                            ])->update(['phases_status'=>'进行中']);
+                                            ])->update(['phases_status'=>'完成']);
              //调用模板创建模板方法   
              $array = $createword->create($request,5,$iid);
               //储存文件地址
@@ -262,6 +263,7 @@ class ItemsPhasesController extends Controller
                                             'created_at'=>  date('Y-m-d H:i:s')
                                         ]);
                      }
+            return true;
 
         }elseif($type == 'xmbgjsp'){
 
@@ -276,7 +278,7 @@ class ItemsPhasesController extends Controller
                                                 ['items_id', '=', $iid],
                                                 ['phases_id','=',6]
                                             ])->update(['phases_status'=>'进行中']);
-
+              return true;
         }elseif($type == 'htqcspjqd'){
 
            //修改阶段状态
@@ -295,6 +297,7 @@ class ItemsPhasesController extends Controller
                                                 ['items_id', '=', $iid],
                                                 ['phases_id','=',7]
                                             ])->update(['phases_status'=>'进行中']);
+            return true;
         }
 
     }
@@ -423,6 +426,70 @@ class ItemsPhasesController extends Controller
             }
         }
 
+        //担保函
+        //直接完成，无需写方法
+        //项目变更及审批
+        if($request->btn_type == 'xmbgjsp')
+        {   
+            
+            //数据库白名单设置
+            $data = $request->only([
+                                    'loan_bank',
+                                    'items_id',
+                                    'alteration',
+                                    'table_status',
+                                    'created_at'
+                                   ]);
+            //获取文件
+             $file = $request->business_license;
+            //设置操作数据库
+            $table = new Xmbgjsp();
+             //获取项目id
+            $data['items_id'] = $iid;
+            //获取操作状态
+            $status = $request->table_status;
+            //第一个阶段
+            $pid = 6;
+            //调用更新方法
+            $status = $this->phase_update($table,$data,$pid,$status,$file,$request,$iid);
+            //判断是否执行成功
+            if($status){
+
+                return back();
+            }
+        }
+
+        //项目变更及审批
+        if($request->btn_type == 'xmbgjsp')
+        {   
+            
+            //数据库白名单设置
+            $data = $request->only([
+                                    'loan_bank',
+                                    'items_id',
+                                    'alteration',
+                                    'table_status',
+                                    'created_at'
+                                   ]);
+            //获取文件
+             $file = $request->business_license;
+            //设置操作数据库
+            $table = new Xmbgjsp();
+             //获取项目id
+            $data['items_id'] = $iid;
+            //获取操作状态
+            $status = $request->table_status;
+            //第一个阶段
+            $pid = 6;
+            //调用更新方法
+            $status = $this->phase_update($table,$data,$pid,$status,$file,$request,$iid);
+            //判断是否执行成功
+            if($status){
+
+                return back();
+            }
+        }
+
     }
 
     //处理更新表单数据方法
@@ -480,6 +547,7 @@ class ItemsPhasesController extends Controller
                                                         'created_at' => date('Y-m-d H:i:s')
                                                         ]);
                 } 
+
             }
             //状态改为1
             $data['table_status'] = $status;
@@ -493,8 +561,9 @@ class ItemsPhasesController extends Controller
                 $status = ItemsPhaseCreate::where([
                                                     ['items_id', '=', $data['items_id']],
                                                     ['phases_id','=',$pid]
-                                                ])->update(['phases_status'=>'完成']);
-
+                                                ])
+                                                ->update(['phases_status'=>'完成']);
+                
                 return true;                 
             } 
         }
@@ -567,6 +636,9 @@ class ItemsPhasesController extends Controller
                 ItemsPhaseCreate::where('items_id', '=', $iid)
                                     ->where('phases_id','=',$num)
                                     ->update(['phases_status'=>'进行中']);
+                //修改项目状态
+                Item::where('id','=',$iid)
+                        ->update(['items_status'=>'进行中']);
 
                 return 'true';
                 
@@ -621,6 +693,11 @@ class ItemsPhasesController extends Controller
                     ItemsPhaseCreate::where('items_id', '=', $iid)
                                             ->where('phases_id','=',$num)
                                             ->update(['phases_status'=>'完成']);
+
+                    //修改项目状态
+                    Item::where('id','=',$iid)
+                            ->update(['items_status'=>'进行中']);
+                            
                     return 'true';                                                  
                 }
             }else{

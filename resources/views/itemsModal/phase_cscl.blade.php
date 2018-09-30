@@ -29,7 +29,7 @@
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="lxspb">
         <div class="form-group">
-            <div class="modal-body">           
+            <div class="modal-body">
               <table class="table table-striped table-bordered table-hover">
                 <tr>
                   <td>
@@ -62,7 +62,7 @@
                           <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-jpy" aria-hidden="true">&nbsp;&nbsp;注册资本</i></div>
                             <input type="text" name='registered_capital' class="form-control" id="exampleInputAmount" value="{{ $company->registered_capital }}" onkeyup="if(/\D/.test(this.value)){alert('只能输入数字');this.value='';}">
-                            <div class="input-group-addon">元</div>
+                            <div class="input-group-addon">万元</div>
                           </div>
                        </div>
                     </fieldset>
@@ -116,7 +116,8 @@
                         <label class="sr-only" for="exampleInputAmount">贷款期限</label>
                         <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-clock-o" aria-hidden="true">&nbsp;&nbsp;期限</i></div>
-                            <input type="text" name='deadline' class="form-control" id="exampleInputAmount" placeholder="贷款期限(年)" maxlength='2'>
+                            <input type="text" name='deadline' class="form-control" id="exampleInputAmount" placeholder="贷款期限" maxlength='2'>
+                            <div class="input-group-addon">年</div>
                         </div>
                     </div>
                   </td>
@@ -124,8 +125,9 @@
                     <div class="form-group">
                         <label class="sr-only" for="exampleInputAmount">担保费率</label>
                         <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-percent" aria-hidden="true">&nbsp;&nbsp;费率</i></div>
+                            <div class="input-group-addon">费率</div>
                             <input type="text" name='rate' class="form-control" id="exampleInputAmount" placeholder="担保费率(年化)" maxlength='3'>
+                            <div class="input-group-addon">%年化</div>
                         </div>
                     </div>
                   </td>
@@ -174,9 +176,9 @@
                           <div class="form-group">
                               <label class="sr-only" for="exampleInputAmount">担保额度</label>
                               <div class="input-group">
-                                  <div class="input-group-addon"><i class="fa fa-jpy" aria-hidden="true">&nbsp;&nbsp;贷款金额</i></div>
-                                  <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" placeholder="贷款额度" maxlength='3'>
-                                 
+                                <div class="input-group-addon"><i class="fa fa-jpy" aria-hidden="true">&nbsp;&nbsp;贷款金额</i></div>
+                                <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" placeholder="贷款额度" >
+                                <div class="input-group-addon">万元</div>
                               </div>
                           </div>
                         </td>
@@ -251,7 +253,7 @@
                       <div class="form-group">
                           <label class="sr-only" for="exampleInputAmount">客户名称</label>
                           <div class="input-group">
-                              <div class="input-group-addon"><i class="fa fa-building" aria-hidden="true">客户</i></div>
+                              <div class="input-group-addon"><i class="fa fa-building" aria-hidden="true">&nbsp;&nbsp;客户</i></div>
                               <input type="text" readonly name='company_name' class="form-control" id="exampleInputAmount" value='{{ $company->company_name }}'maxlength="20">
                           </div>
                       </div>
@@ -274,7 +276,7 @@
                           <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-jpy" aria-hidden="true">&nbsp;&nbsp;注册资本</i></div>
                             <input type="text" name='registered_capital' class="form-control" id="exampleInputAmount" value="{{ $company->registered_capital }}" onkeyup="if(/\D/.test(this.value)){alert('只能输入数字');this.value='';}">
-                            <div class="input-group-addon">元</div>
+                            <div class="input-group-addon">万元</div>
                           </div>
                        </div>
                     </fieldset>
@@ -336,8 +338,9 @@
                     <div class="form-group">
                         <label class="sr-only" for="exampleInputAmount">担保费率</label>
                         <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-percent" aria-hidden="true">&nbsp;&nbsp;费率</i></div>
+                            <div class="input-group-addon">费率</div>
                             <input type="text" name='rate' class="form-control" id="exampleInputAmount" value='{{ $phasetable['rate'] }}' maxlength='3'>
+                            <div class="input-group-addon"><i class="fa fa-percent" aria-hidden="true">&nbsp;&nbsp;年化</i></div>
                         </div>
                     </div>
                   </td>
@@ -385,7 +388,8 @@
                               <label class="sr-only" for="exampleInputAmount">担保额度</label>
                               <div class="input-group">
                                   <div class="input-group-addon"><i class="fa fa-jpy" aria-hidden="true">&nbsp;&nbsp;贷款金额</i></div>
-                                  <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" value='{{ $phasetable['loans_money'] }}' maxlength='3'>
+                                  <input type="text" name='loans_money' class="form-control" id="exampleInputAmount" value="{{ $phasetable['loans_money'] }}" >
+                                  <div class="input-group-addon">万元</div>
                               </div>
                           </div>
                         </td>
@@ -399,42 +403,38 @@
                         </div>
                         </td>
                       </tr>
-					 <?php $a = 0;$b=0; ?>
-					@foreach($url as $uv)
-					  @if($uv->phases_id == 1)
-						@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
-					 <?php $a = 1; ?>
-						@elseif(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
-					 <?php $b = 1; ?>
-						@endif
-					  @endif
-					@endforeach
-					@if($a==1||$b==1)
-                       <tr>
+                       <tr id="all_box1" style="display:none;" >
                           <th colspan="5" style='text-align: center'>已上传附件列表</th>
                         </tr>
-						@if($a==1)
-                        <tr>
+                        <tr id="img_box1" style="display:none;" >
                           <td colspan="5">
                             <div class="boss">
                               <div class="bigimg">
-                                <img src="" height="350" width="350" id="spic"> 
+                                <img src="" height="350" width="350" id="spic1"> 
                               </div>
                               <div class="xia"> <a class="prev"><</a> <a class="next">></a>
-                                <div class="items">
+                                <div class="items1">
                                   <ul >
+								  <?php $isshow_img = false;$isshow_doc = false; ?>
                                     @foreach($url as $uv)
                                       @if($uv->phases_id == 1)
                                         @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
                                           <li>
                                             <a target="_blank"  href="{{ $uv->site_url }}">
-                                              <img src="{{ $uv->site_url }}" id='imgsrc' height="56" width="56">
+                                              <img src="{{ $uv->site_url }}" id='imgsrc1' height="56" width="56">
                                             </a>
                                             <br>
                                             <span>{{ $uv->file_name }}</span>
                                             <br> 
                                               <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
-                                          </li>
+											</li>
+											@if(!$isshow_img)
+											<script type="text/javascript" >
+												document.getElementById("all_box1").style.display="";
+												document.getElementById("img_box1").style.display="";
+											</script>
+											<?php $isshow_img = true; ?>
+											@endif
                                         @endif
                                       @endif
                                     @endforeach
@@ -442,17 +442,19 @@
                                 </div>
                                 </div>
                               </div>
+                              <script>
+                                var src = document.getElementById('imgsrc1').src;
+                                document.getElementById("spic1").src=src;
+                              </script>
                           </td>
                         </tr>
-						@endif
-						@if($b==1)
-                        <tr>
+                        <tr id="docx_box1" style="display:none;" >
                           <td colspan="5">
                             <div class="boss">
                               <div class="xia" style='width:1100px;'> 
                                 <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
                                 <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
-                                <div class="items" style='height:120px;width:95%; '>
+                                <div class="items" style='height:120px;width:95%;'>
                                   <ul style="height:68px;top:50%;margin-top:-34px;">
                                     @foreach($url as $uv)
                                       @if($uv->phases_id == 1)
@@ -466,6 +468,13 @@
                                             <br>
                                               <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
                                           </li>
+											@if(!$isshow_doc)
+											<script type="text/javascript" >
+												document.getElementById("all_box1").style.display="";
+												document.getElementById("docx_box1").style.display="";
+											</script>
+											<?php $isshow_doc = true; ?>
+											@endif
                                         @endif
                                       @endif
                                     @endforeach
@@ -475,8 +484,6 @@
                               </div>
                           </td>
                         </tr>
-						@endif
-						@endif
                         <tr>
                           <th colspan="5" style='text-align: center'>可打印模板</th>
                         </tr>
@@ -492,13 +499,13 @@
                                       @if($uv->phase_id == 1)
                                         @if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
                                           <li style='width:150px;float:left;'>
-                                            <a href="#" onClick="doword('{{ URL('') . $uv->site_url }}')">
+                                            <a href="#" onClick="doword('{{ URL('') . '/'. $uv->site_url }}')">
                                               <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
                                             </a>
                                             <br>
                                             <span>{{ $uv->mb_name }}</span>
                                             <br>
-                                              <a href="{{ $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+                                              <a href="{{ '/' . $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
                                           </li>
                                         @endif
                                       @endif
@@ -734,42 +741,38 @@
                           </fieldset>
                         </td>
                       </tr>
-					 <?php $a = 0;$b=0; ?>
-					@foreach($url as $uv)
-					  @if($uv->phases_id == 1)
-						@if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
-					 <?php $a = 1; ?>
-						@elseif(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'doc' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'docx')
-					 <?php $b = 1; ?>
-						@endif
-					  @endif
-					@endforeach
-					@if($a==1||$b==1)
-                       <tr>
+                       <tr id="all_box1" style="display:none;" >
                           <th colspan="5" style='text-align: center'>已上传附件列表</th>
                         </tr>
-						@if($a==1)
-                        <tr>
+                        <tr id="img_box1" style="display:none;" >
                           <td colspan="5">
                             <div class="boss">
                               <div class="bigimg">
-                                <img src="" height="350" width="350" id="spic"> 
+                                <img src="" height="350" width="350" id="spic1"> 
                               </div>
                               <div class="xia"> <a class="prev"><</a> <a class="next">></a>
-                                <div class="items">
-                                  <ul>
+                                <div class="items1">
+                                  <ul >
+								  <?php $isshow_img = false;$isshow_doc = false; ?>
                                     @foreach($url as $uv)
                                       @if($uv->phases_id == 1)
                                         @if(substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'jpg' || substr($uv->file_name,strpos($uv->file_name,'.')+1) == 'png')
                                           <li>
                                             <a target="_blank"  href="{{ $uv->site_url }}">
-                                              <img src="{{ $uv->site_url }}" id='imgsrc' height="56" width="56">
+                                              <img src="{{ $uv->site_url }}" id='imgsrc1' height="56" width="56">
                                             </a>
                                             <br>
                                             <span>{{ $uv->file_name }}</span>
                                             <br> 
                                               <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
-                                          </li>
+											</li>
+											@if(!$isshow_img)
+											<script type="text/javascript" >
+												document.getElementById("all_box1").style.display="";
+												document.getElementById("img_box1").style.display="";
+											</script>
+											<?php $isshow_img = true; ?>
+											@endif
                                         @endif
                                       @endif
                                     @endforeach
@@ -778,14 +781,12 @@
                                 </div>
                               </div>
                               <script>
-                                var src = document.getElementById('imgsrc').src;
-                                document.getElementById("spic").src=src;
+                                var src = document.getElementById('imgsrc1').src;
+                                document.getElementById("spic1").src=src;
                               </script>
                           </td>
                         </tr>
-						@endif
-						@if($b==1)
-                        <tr>
+                        <tr id="docx_box1" style="display:none;" >
                           <td colspan="5">
                             <div class="boss">
                               <div class="xia" style='width:1100px;'> 
@@ -805,6 +806,13 @@
                                             <br>
                                               <a href="{{ $uv->site_url }}" download="{{ $uv->file_name }}" >下载</a>
                                           </li>
+											@if(!$isshow_doc)
+											<script type="text/javascript" >
+												document.getElementById("all_box1").style.display="";
+												document.getElementById("docx_box1").style.display="";
+											</script>
+											<?php $isshow_doc = true; ?>
+											@endif
                                         @endif
                                       @endif
                                     @endforeach
@@ -814,8 +822,6 @@
                               </div>
                           </td>
                         </tr>
-						@endif
-						@endif
                         <tr>
                           <th colspan="5" style='text-align: center'>可打印模板</th>
                         </tr>
@@ -823,21 +829,21 @@
                           <td colspan="5">
                             <div class="boss">
                               <div class="xia" style='width:1100px;'> 
-                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'><</a> 
-                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>></a>
+                                <a class="prev" style='width:20px;height:120px;line-height: 120px;'>&lt;</a> 
+                                <a class="next" style='width:20px;height:120px;line-height: 120px;'>&gt;</a>
                                 <div class="items" style='height:120px;width:95%;'>
-                                  <ul style="height:68px;top:50%;margin-top:-34px; ">
+                                  <ul style="height:68px;top:50%;margin-top:-34px;" >
                                     @foreach($mb_words as $uv)
                                       @if($uv->phase_id == 1)
                                         @if(substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'doc' || substr($uv->site_url,strpos($uv->site_url,'.')+1) == 'docx')
                                           <li style='width:150px;float:left;'>
-                                            <a href="#" onClick="doword('{{ URL('/') . $uv->site_url }}')">
+                                            <a href="#" onClick="doword('{{ URL(''). '/' . $uv->site_url  }}')">
                                               <i class="fa fa-file-word-o fa-2x" aria-hidden="true"></i>
                                             </a>
                                             <br>
                                             <span>{{ $uv->mb_name }}</span>
                                             <br>
-                                              <a href="{{ $uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
+                                              <a href="{{ '/' .$uv->site_url }}" download="{{ $uv->mb_name }}" >下载</a>
                                           </li>
                                         @endif
                                       @endif
@@ -848,6 +854,7 @@
                               </div>
                           </td>
                         </tr>
+
                     </table>
                   </div>
                   <div class="modal-footer">

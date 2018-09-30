@@ -130,10 +130,6 @@
               </table>
 
                   <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">
-                      立即打印
-                    </button>
-                    <span style='color:red;font-size:14px;'>(打印担保意向函)</span>
                     <button type="submit" class="btn btn-primary" onclick="save(this)">
                     保存
                     </button>

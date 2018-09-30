@@ -17,7 +17,7 @@
     <link href="/assets/css/custom.css" rel="stylesheet" />
     <!-- GOOGLE FONTS-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-	<link rel="stylesheet" href="/css/ystep.css" type='text/css'>
+	<link rel="stylesheet" href="/css/control.css" type='text/css'>
     
     <link href="/img-style/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
     <link href="/img-style/themes/explorer-fa/theme.css" media="all" rel="stylesheet" type="text/css"/>
@@ -40,7 +40,6 @@
 
     <script src="/dist/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
     <script src="/dist/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
-	<script src="/js/ystep.js"></script>
    
 
 </head>

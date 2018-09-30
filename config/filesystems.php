@@ -62,6 +62,12 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
         ],
+        'mb_word' => [
+            'driver' => 'local',
+            'root' => public_path('/'),
+            'url' => env('APP_URL') . public_path(),
+            'visibility' => 'public',
+        ],
 
     ],
 

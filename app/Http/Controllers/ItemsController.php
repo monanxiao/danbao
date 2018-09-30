@@ -17,6 +17,19 @@ use App\Models\Xmbgjsp;
 
 class ItemsController extends Controller
 {
+    //取出所有项目列表
+    public function show(){
+
+        //取出所有项目、所属客户、创建人
+        // $items = Item::all();
+        $items = Item::Leftjoin('companies','items.companys_id','=','companies.id')
+                        ->Leftjoin('naturals','items.naturals_id','=','naturals.id')
+                        ->select('items.*','naturals.natural_name','companies.company_name')
+                        ->get();
+        // dd($items);
+
+        return view('items.items_list',compact('items'));
+    }
     //创建公司项目
     public function CreateItems(Request $request,ItemsPhaseCreate $phaseCreate){
 
@@ -146,7 +159,8 @@ class ItemsController extends Controller
         $xmbgjsp_data = $xmbgjsp_array['phasetable'];
         //数据状态
         $xmbgjsp_status = $xmbgjsp_array['phasestatus'];
-                            
+
+
         return view('items.itemsPhaseShow',compact('items','phase','company','phasetable','phasestatus','bqjzdc_data','bqjzdc_status','url','fxscsp_data','fxscsp_status','mb_words','xmbgjsp_data','xmbgjsp_status'));
     }
     //获取阶段数据

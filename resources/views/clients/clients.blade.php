@@ -6,10 +6,15 @@
     <form action="#" class="form-inline search-form" >
         &nbsp;&nbsp;&nbsp;<input type="text" class="form-control input-sm"  name="client" placeholder="搜索公司">
         <button class="btn btn-primary btn-sm" >搜索</button>
+            <a href="{{ URL('items/phase/create') }}" >生成阶段</a>
+
         <button type='button' class="btn btn-info btn-sm" data-toggle="modal" data-target="#companyAdd" >
-        <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;公司
+                <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;公司
         </button> 
-        <a href="{{ URL('items/phase/create') }}" >生成阶段</a>
+
+        <button type='button' class="btn btn-info btn-sm" data-toggle="modal" data-target="#naturalAdd" >
+            <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;自然人
+        </button> 
     </form>
 </div>
     {{-- 导航区 --}}
@@ -149,8 +154,10 @@
         </div>
 </div>
 
-
+{{-- 引入公司创建模态框 --}}
 @include('modal.companyAdd')
+{{-- 引入自然人创建模态框 --}}
+@include('modal.naturalAdd')
 
 <script type="text/javascript">
 

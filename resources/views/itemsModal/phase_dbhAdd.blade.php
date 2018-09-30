@@ -46,15 +46,11 @@
                         </tr>
                     </table>
                   <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">
-                      完成
-                    </button>
-                    <span style='color:red;font-size:14px;'>(进入下一阶段)</span>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>   
                     <button type="submit" class="btn btn-warning">
                     提审<br>
                     </button>
                     <span style='color:red;font-size:14px;'>(领导审批)</span>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>   
                   </div>
                 </div>
                 <hr>

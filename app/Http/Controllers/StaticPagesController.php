@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Natural;
 use App\Models\Item;
 use App\Handlers\CreateWord;
+use Illuminate\Support\Facades\Storage;
 class StaticPagesController extends Controller
 {
     //客户列表
@@ -39,6 +40,18 @@ class StaticPagesController extends Controller
               $natural = Natural::find($cid);
               
             return view('clients.clientsnAturalitems',compact('cid','item','natural'));
+    }
+
+    //取出所有word
+    public function Wordshow(){
+       // 取到磁盘实例
+        $disk = Storage::disk('mb_word');
+
+        $directory = '/mb_word/';
+        // 获取目录下的文件
+        $mb_word = $disk->files($directory);
+        // dd($mb_word);
+        return view('staticpages.word_list',compact('mb_word'));
     }
     //预览word
     public function word(){

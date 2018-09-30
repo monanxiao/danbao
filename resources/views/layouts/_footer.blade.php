@@ -12,3 +12,5 @@
 	
 	
     <script src="/js/imgqiehuan.js"></script>
+	<script src="/js/jquery.easing.1.3.js"></script>
+	<script src="/js/stepBar.js"></script>

@@ -38,6 +38,10 @@
                      <td>{{ $iv->users_name }}</td>   
                      <td>{{ $iv->created_at}}</td>   
                      <td>{{ $iv->items_status }}</td>   
+                     <td>
+                         <span>编辑</span>
+                         <span>迁移</span>
+                     </td>
                 </tr> 
             @endforeach    
         </tbody>

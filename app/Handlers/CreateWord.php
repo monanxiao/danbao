@@ -5,7 +5,7 @@
  * @Date:   2018-09-19 17:07:22
  * @email:   monanxiao@qq.com
  * @Last Modified by:   Mo Nanxiao
- * @Last Modified time: 2018-09-28 17:54:29
+ * @Last Modified time: 2018-09-30 15:52:59
  */
 namespace App\Handlers;
 
@@ -22,17 +22,17 @@ class CreateWord{
 		$path = public_path();
 		//创建目录
 		//判断目录是否存在，不存在则创建
-		$res = $path . '\\' . 'items\\' . $iid . '\phase\\';
+		$res = $path . '/items/' . $iid . '/phase/';
 
 		if(is_dir($res)){
 
-				$res = 'items\\' . $iid . '\phase\\';
+				$res = 'items/' . $iid . '/phase/';
 
 			}else{
 
-				 mkdir(iconv("UTF-8", "GBK",'items\\' . $iid . '\phase\\'),0777,true);
+				 mkdir(iconv("UTF-8", "GBK",'items/' . $iid . '/phase/'),0777,true);
 
-				 $res = 'items\\' . $iid . '\phase\\';
+				 $res = 'items/' . $iid . '/phase/';
 			}
 
 		//判断传入文件
@@ -41,13 +41,13 @@ class CreateWord{
 			//读取委托担保申请书模板
 			$document = $PHPWord->loadTemplate($path . '/mb_word/' .'委托担保申请书.docx'); 
 			//生成的文件名称
-			$wtdb = $res . '委托担保申请书.docx';
+			$wtdb =  $res . '委托担保申请书.docx';
 			// 执行保存文件
 			 $this->word_va($document,$wtdb,$data);
 			//读取担立项审批表
 			$document = $PHPWord->loadTemplate($path . '/mb_word/' .'立项审批表.docx');
 			//生成的文件名称
-			$lxsp =  $res . '立项审批表.docx';
+			$lxsp = '' . $res . '立项审批表.docx';
 			// 执行保存文件
 			$this->word_va($document,$lxsp,$data);
 			//读取担保意向函模板
@@ -134,7 +134,7 @@ class CreateWord{
 				//返回数据集合
 				$dataword = [$xmbgjspb];
 
-		}elseif ($num == 'fktzs'){
+		}elseif ($num == '8'){
 
 				//读取担保意向函模板
 				$document = $PHPWord->loadTemplate($path . '/' .  '放款审批表.docx');
